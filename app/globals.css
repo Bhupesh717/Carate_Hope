@@ -32,7 +32,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.008 55);
-  --input: oklch(0.98 0.008 55);
+  --input: oklch(0.92 0.008 55);
   --ring: oklch(0.65 0.13 55);
   
   /* Chart colors - Terracotta and rose gold tones */

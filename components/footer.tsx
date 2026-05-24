@@ -182,6 +182,7 @@ export function Footer() {
                 <li><Link href="/refund-policy" className="text-slate-400 hover:text-white transition-colors">Refund Policy</Link></li>
                 <li><Link href="/shipping-policy" className="text-slate-400 hover:text-white transition-colors">Shipping Policy</Link></li>
                 <li><Link href="/cancellation-returns" className="text-slate-400 hover:text-white transition-colors">Cancellation & Returns</Link></li>
+                <li><Link href="/admin/login" target='_blank' className="text-slate-400 hover:text-white transition-colors">Admin Panel </Link></li>
 
               </ul>
             </div>
