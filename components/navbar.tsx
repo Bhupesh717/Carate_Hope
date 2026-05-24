@@ -119,9 +119,9 @@ export function Navbar() {
               isAuthenticated ? (
                 <Link
                   href="/profile"
-                  className={`ml-2 flex items-center gap-2 px-4 py-2.5 text-xs font-semibold uppercase transition-all duration-300 rounded-xl ${scrolled
+                  className={`ml-2 flex items-center gap-2 px-4 py-2.5 text-[10px] tracking-[0.2em] font-semibold uppercase transition-all duration-300 rounded-none ${scrolled
                       ? 'bg-slate-100 text-slate-800 hover:bg-slate-200'
-                      : 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm'
+                      : 'bg-[#f5ece6] text-[#b97a57] hover:bg-[#ebd4c8]'
                     }`}
                 >
                   <User className="w-4 h-4" />
@@ -237,7 +237,7 @@ export function Navbar() {
                     <Link
                       href="/profile"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full bg-slate-100 hover:bg-slate-200 text-slate-800 py-4 text-xs tracking-[0.2em] uppercase font-semibold transition-colors rounded-xl"
+                      className="flex items-center justify-center gap-2 w-full bg-slate-100 hover:bg-slate-200 text-slate-800 py-4 text-xs tracking-[0.2em] uppercase font-semibold transition-colors"
                     >
                       <User className="w-4 h-4" />
                       My Account

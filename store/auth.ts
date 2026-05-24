@@ -6,6 +6,9 @@ export interface User {
   name: string;
   email: string;
   joinDate: string;
+  phone?: string;
+  permanentAddress?: string;
+  shippingAddress?: string;
 }
 
 interface AuthState {
