@@ -1,0 +1,193 @@
+'use client';
+
+import { mockProducts } from '@/lib/mock-data';
+import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
+import { Button } from '@/components/ui/button';
+import { Heart } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import Link from 'next/link';
+
+export default function ProductPage({ params }: { params: { id: string } }) {
+  const product = mockProducts.find((p) => p.id === params.id);
+  const [quantity, setQuantity] = useState(1);
+  const addToCart = useCartStore((state) => state.addItem);
+  const { toggleWishlist, isInWishlist } = useWishlistStore();
+  const inWishlist = product ? isInWishlist(product.id) : false;
+
+  if (!product) {
+    return (
+      <div className="border-t border-neutral-200">
+        <div className="mx-auto max-w-7xl px-6 py-12 text-center">
+          <h1 className="text-3xl font-light text-neutral-900">Product Not Found</h1>
+          <Link href="/shop" className="mt-4 inline-block">
+            <Button className="bg-neutral-900 text-white hover:bg-neutral-800">
+              Back to Shop
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  const relatedProducts = mockProducts
+    .filter((p) => p.category === product.category && p.id !== product.id)
+    .slice(0, 4);
+
+  return (
+    <div className="border-t border-neutral-200">
+      {/* Product Section */}
+      <div className="mx-auto max-w-7xl px-6 py-12">
+        <div className="grid gap-12 lg:grid-cols-2">
+          {/* Image */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="aspect-square overflow-hidden rounded-lg bg-neutral-100"
+          >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+
+          {/* Details */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="space-y-6"
+          >
+            <div>
+              <p className="mb-2 text-sm uppercase text-neutral-600">{product.category}</p>
+              <h1 className="text-4xl font-light text-neutral-900">{product.name}</h1>
+            </div>
+
+            {product.rating && (
+              <div className="flex items-center gap-2">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <span
+                      key={i}
+                      className={i < Math.floor(product.rating!) ? 'text-yellow-500' : 'text-neutral-300'}
+                    >
+                      ★
+                    </span>
+                  ))}
+                </div>
+                <span className="text-sm text-neutral-600">
+                  {product.rating} ({product.reviews} reviews)
+                </span>
+              </div>
+            )}
+
+            <div className="border-t border-b border-neutral-200 py-6">
+              <p className="text-4xl font-light text-neutral-900">
+                ${product.price.toLocaleString()}
+              </p>
+            </div>
+
+            <p className="text-neutral-600 leading-relaxed">{product.description}</p>
+
+            {/* Quantity and Add to Cart */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <span className="text-sm uppercase text-neutral-600">Quantity</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="h-10 w-10 rounded border border-neutral-200 hover:bg-neutral-100"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                    className="h-10 w-16 rounded border border-neutral-200 text-center"
+                  />
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="h-10 w-10 rounded border border-neutral-200 hover:bg-neutral-100"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <Button
+                  onClick={() => {
+                    addToCart(product, quantity);
+                    setQuantity(1);
+                  }}
+                  className="flex-1 bg-neutral-900 text-white hover:bg-neutral-800"
+                >
+                  Add to Cart
+                </Button>
+                <Button
+                  onClick={() => toggleWishlist(product)}
+                  variant="outline"
+                  className="border-neutral-200"
+                >
+                  <Heart
+                    className="h-5 w-5"
+                    fill={inWishlist ? '#dc2626' : 'none'}
+                    color={inWishlist ? '#dc2626' : 'currentColor'}
+                  />
+                </Button>
+              </div>
+            </div>
+
+            {/* Additional Info */}
+            <div className="space-y-4 border-t border-neutral-200 pt-6">
+              <div>
+                <h3 className="mb-2 font-light text-neutral-900">Shipping Info</h3>
+                <p className="text-sm text-neutral-600">Free shipping on orders over $100</p>
+              </div>
+              <div>
+                <h3 className="mb-2 font-light text-neutral-900">Returns</h3>
+                <p className="text-sm text-neutral-600">30-day return policy for all items</p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <div className="border-t border-neutral-200 bg-neutral-50 py-12">
+          <div className="mx-auto max-w-7xl px-6">
+            <h2 className="mb-8 text-3xl font-light text-neutral-900">Related Products</h2>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {relatedProducts.map((p) => (
+                <Link key={p.id} href={`/product/${p.id}`}>
+                  <div className="group cursor-pointer overflow-hidden rounded-lg border border-neutral-200 bg-white">
+                    <div className="aspect-square overflow-hidden bg-neutral-100">
+                      <img
+                        src={p.image}
+                        alt={p.name}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-light text-neutral-900 group-hover:text-neutral-600">
+                        {p.name}
+                      </h3>
+                      <p className="mt-2 text-lg font-light text-neutral-900">
+                        ${p.price.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
