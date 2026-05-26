@@ -24,13 +24,16 @@ export default function UsersPage() {
 
   const handleToggle = async (u: AppUser) => {
     await userService.toggleStatus(u.id);
-    toast.success(`User ${u.status === 'active' ? 'deactivated' : 'activated'}`);
     load();
   };
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    setDeleting(true); await userService.delete(deleteTarget.id); toast.success('User deleted'); setDeleting(false); setDeleteTarget(null); load();
+    setDeleting(true); 
+    await userService.delete(deleteTarget.id); 
+    setDeleting(false); 
+    setDeleteTarget(null); 
+    load();
   };
 
   const columns: DTColumn<AppUser>[] = [

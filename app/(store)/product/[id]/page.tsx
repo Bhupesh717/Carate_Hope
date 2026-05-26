@@ -6,15 +6,102 @@ import { useWishlistStore } from '@/store/wishlist';
 import { Button } from '@/components/ui/button';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { apiClient } from '@/lib/api-client';
+import { Product } from '@/types';
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = mockProducts.find((p) => p.id === params.id);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const addToCart = useCartStore((state) => state.addItem);
   const { toggleWishlist, isInWishlist } = useWishlistStore();
   const inWishlist = product ? isInWishlist(product.id) : false;
+
+  useEffect(() => {
+    async function fetchProductDetail() {
+      try {
+        setLoading(true);
+        const response = await apiClient.get(`/public/products/${params.id}`);
+        if (response.data && response.data.success && response.data.data) {
+          const p = response.data.data;
+          
+          // Map product detail
+          const imgs = p.product_images || [];
+          const sortedImgs = [...imgs].sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
+          const imagePath = sortedImgs[0]?.image_path || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop';
+          
+          const mappedProd: Product = {
+            id: String(p.id),
+            name: p.name,
+            price: Number(p.discount_price ?? p.price),
+            category: p.category?.name || 'Jewelry',
+            image: imagePath,
+            description: p.description || '',
+            rating: 4.8,
+            reviews: 124,
+          };
+          setProduct(mappedProd);
+
+          // Fetch related products in the same category
+          if (p.category_id) {
+            const relResponse = await apiClient.get(`/public/products?category_id=${p.category_id}&per_page=5`);
+            if (relResponse.data && relResponse.data.success && relResponse.data.data.data) {
+              const mappedRel: Product[] = relResponse.data.data.data
+                .filter((item: any) => item.id !== p.id)
+                .slice(0, 4)
+                .map((item: any) => {
+                  const itemImgs = item.product_images || [];
+                  const sortedItemImgs = [...itemImgs].sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
+                  return {
+                    id: String(item.id),
+                    name: item.name,
+                    price: Number(item.discount_price ?? item.price),
+                    category: item.category?.name || 'Jewelry',
+                    image: sortedItemImgs[0]?.image_path || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop',
+                    description: item.description || '',
+                  };
+                });
+              setRelatedProducts(mappedRel);
+            }
+          }
+        } else {
+          runLocalMockFallback();
+        }
+      } catch (err) {
+        console.error('Error loading product details:', err);
+        runLocalMockFallback();
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    function runLocalMockFallback() {
+      const p = mockProducts.find((item) => item.id === params.id);
+      if (p) {
+        setProduct(p);
+        const rel = mockProducts
+          .filter((item) => item.category === p.category && item.id !== p.id)
+          .slice(0, 4);
+        setRelatedProducts(rel);
+      } else {
+        setProduct(null);
+        setRelatedProducts([]);
+      }
+    }
+
+    fetchProductDetail();
+  }, [params.id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#b97a57] border-t-transparent" />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -30,10 +117,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       </div>
     );
   }
-
-  const relatedProducts = mockProducts
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
 
   return (
     <div className="border-t border-neutral-200">

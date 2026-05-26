@@ -26,7 +26,6 @@ export default function OrdersPage() {
 
   const handleStatusChange = async (id: string, status: OrderStatus) => {
     await orderService.updateStatus(id, status);
-    toast.success(`Order status updated to ${status}`);
     load();
   };
 

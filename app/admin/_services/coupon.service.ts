@@ -1,27 +1,62 @@
-import { mockCoupons } from '../_data/coupons';
+import { adminApiClient } from '@/lib/api-client';
 import { Coupon } from '../_types';
 
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
-let coupons = [...mockCoupons];
+const mapCoupon = (c: any): Coupon => ({
+  id: String(c.id),
+  code: c.code,
+  discountType: c.discount_type,
+  discountValue: Number(c.discount_value),
+  expiryDate: c.expiry_date,
+  usageLimit: Number(c.usage_limit),
+  usageCount: Number(c.usage_count || 0),
+  status: c.status,
+  createdAt: c.created_at,
+});
 
 export const couponService = {
-  getAll: async (): Promise<Coupon[]> => { await delay(); return [...coupons]; },
-  getById: async (id: string): Promise<Coupon | undefined> => { await delay(); return coupons.find((c) => c.id === id); },
+  getAll: async (): Promise<Coupon[]> => {
+    const response = await adminApiClient.get('/admin/coupons');
+    return (response.data.data || []).map(mapCoupon);
+  },
+
+  getById: async (id: string): Promise<Coupon | undefined> => {
+    const response = await adminApiClient.get(`/admin/coupons/${id}`);
+    if (response.data && response.data.success) {
+      return mapCoupon(response.data.data);
+    }
+    return undefined;
+  },
+
   create: async (data: Omit<Coupon, 'id' | 'createdAt' | 'usageCount'>): Promise<Coupon> => {
-    await delay();
-    const item: Coupon = { ...data, id: `cpn-${Date.now()}`, usageCount: 0, createdAt: new Date().toISOString() };
-    coupons = [item, ...coupons];
-    return item;
+    const payload = {
+      code: data.code,
+      discount_type: data.discountType,
+      discount_value: data.discountValue,
+      expiry_date: data.expiryDate,
+      usage_limit: data.usageLimit,
+    };
+    const response = await adminApiClient.post('/admin/coupons', payload);
+    return mapCoupon(response.data.data);
   },
+
   update: async (id: string, data: Partial<Coupon>): Promise<Coupon> => {
-    await delay();
-    coupons = coupons.map((c) => (c.id === id ? { ...c, ...data } : c));
-    return coupons.find((c) => c.id === id)!;
+    const payload = {
+      code: data.code,
+      discount_type: data.discountType,
+      discount_value: data.discountValue,
+      expiry_date: data.expiryDate,
+      usage_limit: data.usageLimit,
+    };
+    const response = await adminApiClient.put(`/admin/coupons/${id}`, payload);
+    return mapCoupon(response.data.data);
   },
-  delete: async (id: string): Promise<void> => { await delay(); coupons = coupons.filter((c) => c.id !== id); },
+
+  delete: async (id: string): Promise<void> => {
+    await adminApiClient.delete(`/admin/coupons/${id}`);
+  },
+
   toggleStatus: async (id: string): Promise<Coupon> => {
-    await delay();
-    coupons = coupons.map((c) => c.id === id ? { ...c, status: c.status === 'active' ? 'inactive' : 'active' } : c);
-    return coupons.find((c) => c.id === id)!;
+    const response = await adminApiClient.patch(`/admin/coupons/${id}/toggle-status`);
+    return mapCoupon(response.data.data);
   },
 };

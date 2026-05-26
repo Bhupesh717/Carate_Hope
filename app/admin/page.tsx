@@ -11,45 +11,53 @@ import {
 import { StatsCard } from './_components/stats-card';
 import { StatusBadge } from './_components/status-badge';
 import { DataTableSkeleton } from './_components/data-table-skeleton';
-import { mockProducts } from './_data/products';
-import { mockCategories } from './_data/categories';
-import { mockOrders } from './_data/orders';
-import { mockUsers } from './_data/users';
-import { mockCoupons } from './_data/coupons';
 import { format } from 'date-fns';
+import { dashboardService, DashboardStats } from './_services/dashboard.service';
+import { orderService } from './_services/order.service';
+import { Order } from './_types';
 
-/* ---------- mock chart data ---------- */
-const revenueData = [
-  { month: 'Jan', revenue: 12400 }, { month: 'Feb', revenue: 18200 },
-  { month: 'Mar', revenue: 15800 }, { month: 'Apr', revenue: 21500 },
-  { month: 'May', revenue: 19300 }, { month: 'Jun', revenue: 24100 },
-  { month: 'Jul', revenue: 22000 }, { month: 'Aug', revenue: 26800 },
-  { month: 'Sep', revenue: 23500 }, { month: 'Oct', revenue: 28900 },
-  { month: 'Nov', revenue: 31200 }, { month: 'Dec', revenue: 35000 },
-];
-
-const orderStatusCounts = [
-  { name: 'Pending', value: mockOrders.filter((o) => o.orderStatus === 'pending').length },
-  { name: 'Processing', value: mockOrders.filter((o) => o.orderStatus === 'processing').length },
-  { name: 'Shipped', value: mockOrders.filter((o) => o.orderStatus === 'shipped').length },
-  { name: 'Delivered', value: mockOrders.filter((o) => o.orderStatus === 'delivered').length },
-  { name: 'Cancelled', value: mockOrders.filter((o) => o.orderStatus === 'cancelled').length },
-];
 const PIE_COLORS = ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#ef4444'];
 
-const totalRevenue = mockOrders
-  .filter((o) => o.paymentStatus === 'paid')
-  .reduce((s, o) => s + o.totalAmount, 0);
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 600);
-    return () => clearTimeout(t);
+    async function loadData() {
+      try {
+        setLoading(true);
+        const [dashboardStats, allOrders] = await Promise.all([
+          dashboardService.getStats(),
+          orderService.getAll(),
+        ]);
+        setStats(dashboardStats);
+        
+        // Sort and get top 5 recent orders
+        const sorted = [...allOrders]
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .slice(0, 5);
+        setRecentOrders(sorted);
+      } catch (err) {
+        console.error('Error fetching dashboard data:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
   }, []);
 
-  const recentOrders = [...mockOrders].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
+  const orderStatusCounts = stats
+    ? stats.orderStatusDistribution.map((item) => ({
+        name: capitalize(item.status),
+        value: item.count,
+      }))
+    : [];
+
+  const revenueData = stats ? stats.monthlyRevenue : [];
+  const totalRevenue = stats ? stats.totalRevenue : 0;
 
   return (
     <div className="space-y-6">
@@ -60,12 +68,12 @@ export default function AdminDashboard() {
 
       {/* Stats cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <StatsCard title="Products" value={mockProducts.length} icon={<Package className="h-5 w-5" />} trend={{ value: 8.2, label: 'vs last month' }} />
-        <StatsCard title="Categories" value={mockCategories.length} icon={<Layers3 className="h-5 w-5" />} />
-        <StatsCard title="Orders" value={mockOrders.length} icon={<ShoppingCart className="h-5 w-5" />} trend={{ value: 12.5, label: 'vs last month' }} />
-        <StatsCard title="Users" value={mockUsers.length} icon={<Users className="h-5 w-5" />} trend={{ value: 5.1, label: 'vs last month' }} />
-        <StatsCard title="Coupons" value={mockCoupons.length} icon={<TicketPercent className="h-5 w-5" />} />
-        <StatsCard title="Revenue" value={`₹${totalRevenue.toLocaleString()}`} icon={<DollarSign className="h-5 w-5" />} trend={{ value: 18.3, label: 'vs last month' }} />
+        <StatsCard title="Products" value={loading ? '...' : (stats?.activeProducts ?? 0)} icon={<Package className="h-5 w-5" />} />
+        <StatsCard title="Categories" value={loading ? '...' : (stats?.activeCategories ?? 0)} icon={<Layers3 className="h-5 w-5" />} />
+        <StatsCard title="Orders" value={loading ? '...' : (stats?.totalOrders ?? 0)} icon={<ShoppingCart className="h-5 w-5" />} />
+        <StatsCard title="Users" value={loading ? '...' : (stats?.totalUsers ?? 0)} icon={<Users className="h-5 w-5" />} />
+        <StatsCard title="Coupons" value={loading ? '...' : (stats?.activeCoupons ?? 0)} icon={<TicketPercent className="h-5 w-5" />} />
+        <StatsCard title="Revenue" value={loading ? '...' : `₹${totalRevenue.toLocaleString()}`} icon={<DollarSign className="h-5 w-5" />} />
       </div>
 
       {/* Charts row */}

@@ -1,29 +1,46 @@
-import { mockBanners } from '../_data/banners';
+import { adminApiClient } from '@/lib/api-client';
 import { Banner } from '../_types';
 
-// Simulate async API delay
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
-
-let banners = [...mockBanners];
+const mapBanner = (b: any): Banner => ({
+  id: String(b.id),
+  image: b.image,
+  badge: b.badge || '',
+  title: b.title,
+  description: b.description || '',
+  status: b.status,
+  createdAt: b.created_at,
+});
 
 export const bannerService = {
-  getAll: async (): Promise<Banner[]> => { await delay(); return [...banners]; },
-  getById: async (id: string): Promise<Banner | undefined> => { await delay(); return banners.find((b) => b.id === id); },
+  getAll: async (): Promise<Banner[]> => {
+    const response = await adminApiClient.get('/admin/banners');
+    return (response.data.data || []).map(mapBanner);
+  },
+
+  getById: async (id: string): Promise<Banner | undefined> => {
+    const response = await adminApiClient.get(`/admin/banners/${id}`);
+    if (response.data && response.data.success) {
+      return mapBanner(response.data.data);
+    }
+    return undefined;
+  },
+
   create: async (data: Omit<Banner, 'id' | 'createdAt'>): Promise<Banner> => {
-    await delay();
-    const newBanner: Banner = { ...data, id: `ban-${Date.now()}`, createdAt: new Date().toISOString() };
-    banners = [newBanner, ...banners];
-    return newBanner;
+    const response = await adminApiClient.post('/admin/banners', data);
+    return mapBanner(response.data.data);
   },
+
   update: async (id: string, data: Partial<Banner>): Promise<Banner> => {
-    await delay();
-    banners = banners.map((b) => (b.id === id ? { ...b, ...data } : b));
-    return banners.find((b) => b.id === id)!;
+    const response = await adminApiClient.put(`/admin/banners/${id}`, data);
+    return mapBanner(response.data.data);
   },
-  delete: async (id: string): Promise<void> => { await delay(); banners = banners.filter((b) => b.id !== id); },
+
+  delete: async (id: string): Promise<void> => {
+    await adminApiClient.delete(`/admin/banners/${id}`);
+  },
+
   toggleStatus: async (id: string): Promise<Banner> => {
-    await delay();
-    banners = banners.map((b) => b.id === id ? { ...b, status: b.status === 'active' ? 'inactive' : 'active' } : b);
-    return banners.find((b) => b.id === id)!;
+    const response = await adminApiClient.patch(`/admin/banners/${id}/toggle-status`);
+    return mapBanner(response.data.data);
   },
 };

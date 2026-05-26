@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
     setLoading(false);
 
     if (res.success) {
-      toast.success('Welcome back!');
+      toast.success((res as any).message || 'Welcome back!');
       router.replace('/admin');
     } else {
       setError(res.error || 'Login failed');
@@ -106,7 +106,7 @@ export default function AdminLoginPage() {
           </form>
 
           <div className="mt-4 rounded-md bg-muted/50 px-3 py-2 text-center text-xs text-muted-foreground">
-            Demo credentials: <code className="font-mono">admin@example.com</code> / <code className="font-mono">admin123</code>
+            Demo credentials: <code className="font-mono">admin@caratehope.com</code> / <code className="font-mono">password123</code>
           </div>
         </div>
       </div>

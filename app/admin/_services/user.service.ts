@@ -1,16 +1,36 @@
-import { mockUsers } from '../_data/users';
+import { adminApiClient } from '@/lib/api-client';
 import { AppUser } from '../_types';
 
-const delay = (ms = 300) => new Promise((r) => setTimeout(r, ms));
-let users = [...mockUsers];
+const mapUser = (u: any): AppUser => ({
+  id: String(u.id),
+  avatar: u.avatar || `https://i.pravatar.cc/150?u=${u.id}`,
+  name: u.name,
+  email: u.email,
+  phone: u.phone || '',
+  registrationDate: u.created_at || new Date().toISOString(),
+  status: u.status,
+  orderCount: Number(u.orderCount || 0),
+  totalSpent: Number(u.totalSpent || 0),
+});
 
 export const userService = {
-  getAll: async (): Promise<AppUser[]> => { await delay(); return [...users]; },
-  getById: async (id: string): Promise<AppUser | undefined> => { await delay(); return users.find((u) => u.id === id); },
-  delete: async (id: string): Promise<void> => { await delay(); users = users.filter((u) => u.id !== id); },
+  getAll: async (): Promise<AppUser[]> => {
+    const response = await adminApiClient.get('/admin/users');
+    return (response.data.data || []).map(mapUser);
+  },
+
+  getById: async (id: string): Promise<AppUser | undefined> => {
+    const list = await userService.getAll();
+    return list.find((u) => u.id === id);
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await adminApiClient.delete(`/admin/users/${id}`);
+  },
+
   toggleStatus: async (id: string): Promise<AppUser> => {
-    await delay();
-    users = users.map((u) => u.id === id ? { ...u, status: u.status === 'active' ? 'inactive' : 'active' } : u);
-    return users.find((u) => u.id === id)!;
+    await adminApiClient.patch(`/admin/users/${id}/toggle-status`);
+    const list = await userService.getAll();
+    return list.find((u) => u.id === id)!;
   },
 };

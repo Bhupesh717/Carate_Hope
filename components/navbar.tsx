@@ -12,7 +12,7 @@ import { Logo } from '@/components/logo';
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/shop' },
-  { label: 'Accessories', href: '/shop' },
+  { label: 'Bespoke', href: '/bespoke-jewellery' },
 ];
 
 export function Navbar() {

@@ -95,10 +95,8 @@ export default function ProductsPage() {
     };
     if (editing) { 
       await productService.update(editing.id, payload); 
-      toast.success('Product updated'); 
     } else { 
       await productService.create(payload); 
-      toast.success('Product created'); 
     }
     setSaving(false); 
     setFormOpen(false); 
@@ -109,7 +107,6 @@ export default function ProductsPage() {
     if (!deleteTarget) return;
     setDeleting(true); 
     await productService.delete(deleteTarget.id); 
-    toast.success('Product deleted'); 
     setDeleting(false); 
     setDeleteTarget(null); 
     load();
@@ -117,7 +114,6 @@ export default function ProductsPage() {
 
   const handleToggle = async (p: AdminProduct) => {
     await productService.toggleStatus(p.id);
-    toast.success(`Product is now ${p.status === 'active' ? 'inactive' : 'active'}`);
     load();
   };
 

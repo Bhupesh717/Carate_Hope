@@ -76,10 +76,8 @@ export default function CouponsPage() {
     };
     if (editing) { 
       await couponService.update(editing.id, payload); 
-      toast.success('Coupon updated'); 
     } else { 
       await couponService.create(payload); 
-      toast.success('Coupon created'); 
     }
     setSaving(false); 
     setFormOpen(false); 
@@ -90,7 +88,6 @@ export default function CouponsPage() {
     if (!deleteTarget) return;
     setDeleting(true); 
     await couponService.delete(deleteTarget.id); 
-    toast.success('Coupon deleted'); 
     setDeleting(false); 
     setDeleteTarget(null); 
     load();
@@ -98,7 +95,6 @@ export default function CouponsPage() {
 
   const handleToggle = async (c: Coupon) => {
     await couponService.toggleStatus(c.id);
-    toast.success(`Coupon is now ${c.status === 'active' ? 'inactive' : 'active'}`);
     load();
   };
 

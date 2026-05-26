@@ -81,7 +81,6 @@ export default function BannersPage() {
         description: form.description,
         status: form.status,
       });
-      toast.success('Banner updated');
     } else {
       await bannerService.create({
         image: form.image,
@@ -90,7 +89,6 @@ export default function BannersPage() {
         description: form.description,
         status: 'active', // default to active on create
       });
-      toast.success('Banner created');
     }
     setSaving(false);
     setFormOpen(false);
@@ -101,7 +99,6 @@ export default function BannersPage() {
     if (!deleteTarget) return;
     setDeleting(true);
     await bannerService.delete(deleteTarget.id);
-    toast.success('Banner deleted');
     setDeleting(false);
     setDeleteTarget(null);
     load();
@@ -109,7 +106,6 @@ export default function BannersPage() {
 
   const handleToggle = async (b: Banner) => { 
     await bannerService.toggleStatus(b.id); 
-    toast.success(`Banner is now ${b.status === 'active' ? 'inactive' : 'active'}`); 
     load(); 
   };
 

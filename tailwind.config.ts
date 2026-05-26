@@ -62,6 +62,14 @@ const config: Config = {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        bespoke: {
+          gold: "var(--bespoke-gold)",
+          "gold-light": "var(--bespoke-gold-light)",
+          "gold-dark": "var(--bespoke-gold-dark)",
+          black: "var(--bespoke-black)",
+          white: "var(--bespoke-white)",
+          beige: "var(--bespoke-beige)",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",

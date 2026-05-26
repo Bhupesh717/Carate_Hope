@@ -5,21 +5,28 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/auth';
 import { PageHeader } from '@/components/page-header';
-import { User, Package, LogOut, Loader2 } from 'lucide-react';
+import { User, Package, LogOut, Loader2, Gem } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { user, isAuthenticated, logout, updateProfile } = useAuthStore();
+  const { user, isAuthenticated, logout, updateProfile, fetchProfile } = useAuthStore();
   const [isMounted, setIsMounted] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [permanentAddress, setPermanentAddress] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
   const [sameAddress, setSameAddress] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    fetchProfile();
+  }, [fetchProfile]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -56,15 +63,25 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSave = () => {
-    updateProfile({ 
-      name, 
-      email, 
-      phone, 
-      permanentAddress, 
-      shippingAddress 
-    });
-    setIsEditing(false);
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      await updateProfile({ 
+        name, 
+        email, 
+        phone, 
+        permanentAddress, 
+        shippingAddress 
+      });
+      toast.success('Profile updated successfully!');
+      setIsEditing(false);
+    } catch (err: any) {
+      if (!err.response) {
+        toast.error(err.message || 'Failed to update profile.');
+      }
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleLogout = () => {
@@ -94,6 +111,10 @@ export default function ProfilePage() {
               <Package className="w-4 h-4" />
               Order History
             </Link>
+            <Link href="/account/bespoke-orders" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm">
+              <Gem className="w-4 h-4" />
+              Bespoke Orders
+            </Link>
 
             <div className="pt-4 mt-4 border-t border-slate-100">
               <button onClick={handleLogout} className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-colors font-medium text-sm">
@@ -116,7 +137,12 @@ export default function ProfilePage() {
                   <Button variant="outline" onClick={() => setIsEditing(false)} className="rounded-xl border-slate-200 text-slate-600">
                     Cancel
                   </Button>
-                  <Button onClick={handleSave} className="rounded-xl bg-[#b97a57] text-white hover:bg-[#a06648]">
+                  <Button 
+                    onClick={handleSave} 
+                    disabled={isSaving}
+                    className="rounded-xl bg-[#b97a57] text-white hover:bg-[#a06648] flex items-center gap-2"
+                  >
+                    {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     Save Changes
                   </Button>
                 </div>

@@ -81,10 +81,8 @@ export default function CategoriesPage() {
     
     if (editing) { 
       await categoryService.update(editing.id, payload); 
-      toast.success('Category updated'); 
     } else { 
       await categoryService.create(payload); 
-      toast.success('Category created'); 
     }
     
     setSaving(false); 
@@ -96,7 +94,6 @@ export default function CategoriesPage() {
     if (!deleteTarget) return;
     setDeleting(true); 
     await categoryService.delete(deleteTarget.id); 
-    toast.success('Category deleted'); 
     setDeleting(false); 
     setDeleteTarget(null); 
     load();
@@ -104,7 +101,6 @@ export default function CategoriesPage() {
 
   const handleToggle = async (c: AdminCategory) => { 
     await categoryService.toggleStatus(c.id); 
-    toast.success(`Category is now ${c.status === 'active' ? 'inactive' : 'active'}`); 
     load(); 
   };
 

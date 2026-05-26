@@ -5,15 +5,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Phone, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
+import { toast } from 'sonner';
 
 export default function LoginPage() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
   
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,13 +26,18 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      if (!email || !password) {
+      if (!phone || !password) {
         throw new Error('Please fill in all fields');
       }
-      await login(email, password);
+      await login(phone, password);
+      toast.success('Successfully signed in! Welcome back.');
       router.push('/profile');
     } catch (err: any) {
-      setError(err.message || 'Failed to login');
+      const errMsg = err.message || 'Failed to login. Please check your credentials.';
+      setError(errMsg);
+      if (!err.response) {
+        toast.error(errMsg);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -66,18 +72,18 @@ export default function LoginPage() {
             )}
             
             <div>
-              <label className="block text-sm font-medium text-slate-700">Email address</label>
+              <label className="block text-sm font-medium text-slate-700">Mobile Number</label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-4 w-4 text-slate-400" />
+                  <Phone className="h-4 w-4 text-slate-400" />
                 </div>
                 <input
-                  type="email"
+                  type="text"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                   className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
-                  placeholder="you@example.com"
+                  placeholder="e.g. +919876543210"
                 />
               </div>
             </div>

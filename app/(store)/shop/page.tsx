@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '@/components/product-card';
 import { mockProducts } from '@/lib/mock-data';
+import { apiClient } from '@/lib/api-client';
+import { Product, Category } from '@/types';
 import {
   Select,
   SelectContent,
@@ -20,39 +22,106 @@ export default function ShopPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('featured');
 
-  const filteredProducts = useMemo(() => {
-    let products = mockProducts;
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    // Filter by category
-    if (selectedCategory !== 'all') {
-      products = products.filter((p) => p.category === selectedCategory);
+  // Fetch categories once on mount
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await apiClient.get('/public/categories');
+        if (response.data && response.data.success && response.data.data.length > 0) {
+          const mappedCats = response.data.data.map((c: any) => ({
+            id: String(c.id),
+            name: c.name,
+            slug: c.slug,
+            image: c.image || '',
+          }));
+          setCategories(mappedCats);
+        } else {
+          // fallback to mock category names
+          setCategories([
+            { id: 'necklaces', name: 'Necklaces', slug: 'necklaces', image: '' },
+            { id: 'rings', name: 'Rings', slug: 'rings', image: '' },
+            { id: 'bracelets', name: 'Bracelets', slug: 'bracelets', image: '' },
+            { id: 'earrings', name: 'Earrings', slug: 'earrings', image: '' },
+          ]);
+        }
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  // Fetch products when query filters change
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        setLoading(true);
+        const params: Record<string, any> = {
+          per_page: 50,
+        };
+        if (selectedCategory !== 'all') {
+          params.category_id = selectedCategory;
+        }
+        if (searchQuery) {
+          params.search = searchQuery;
+        }
+        if (sortBy === 'price-low') {
+          params.sort_by = 'price_asc';
+        } else if (sortBy === 'price-high') {
+          params.sort_by = 'price_desc';
+        } else if (sortBy === 'newest') {
+          params.sort_by = 'newest';
+        }
+
+        const response = await apiClient.get('/public/products', { params });
+        if (response.data && response.data.success && response.data.data.data) {
+          const mappedProds: Product[] = response.data.data.data.map((p: any) => ({
+            id: String(p.id),
+            name: p.name,
+            price: Number(p.discount_price ?? p.price),
+            category: p.category?.name || 'Jewelry',
+            image: p.product_images?.[0]?.image_path || 'https://images.unsplash.com/photo-1599643477877-530eb83abc8e?w=800&h=800&fit=crop',
+            description: p.description || '',
+            rating: 4.5 + (p.id % 5) * 0.1,
+            reviews: 15 + (p.id % 10) * 12,
+          }));
+          setProducts(mappedProds);
+        } else {
+          runLocalMockFilter();
+        }
+      } catch (err) {
+        console.error('Error fetching public products list:', err);
+        runLocalMockFilter();
+      } finally {
+        setLoading(false);
+      }
     }
 
-    // Filter by search
-    if (searchQuery) {
-      products = products.filter(
-        (p) =>
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+    function runLocalMockFilter() {
+      let filtered = mockProducts;
+      if (selectedCategory !== 'all') {
+        filtered = filtered.filter((p) => p.category === selectedCategory);
+      }
+      if (searchQuery) {
+        filtered = filtered.filter(
+          (p) =>
+            p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            p.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+      if (sortBy === 'price-low') {
+        filtered = [...filtered].sort((a, b) => a.price - b.price);
+      } else if (sortBy === 'price-high') {
+        filtered = [...filtered].sort((a, b) => b.price - a.price);
+      }
+      setProducts(filtered);
     }
 
-    // Sort
-    switch (sortBy) {
-      case 'price-low':
-        products.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        products.sort((a, b) => b.price - a.price);
-        break;
-      case 'newest':
-        // In a real app, would sort by date
-        break;
-      default:
-        break;
-    }
-
-    return products;
+    fetchProducts();
   }, [selectedCategory, searchQuery, sortBy]);
 
   return (
@@ -84,10 +153,9 @@ export default function ShopPage() {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="necklaces">Necklaces</SelectItem>
-              <SelectItem value="rings">Rings</SelectItem>
-              <SelectItem value="bracelets">Bracelets</SelectItem>
-              <SelectItem value="earrings">Earrings</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -106,17 +174,21 @@ export default function ShopPage() {
 
           {/* Results Count */}
           <div className="flex items-center text-sm text-neutral-600">
-            {filteredProducts.length} results
+            {products.length} results
           </div>
         </div>
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div className="flex justify-center items-center py-24">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#b97a57] border-t-transparent" />
+          </div>
+        ) : products.length > 0 ? (
           <motion.div
             layout
             className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {filteredProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </motion.div>

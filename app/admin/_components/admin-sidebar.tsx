@@ -34,6 +34,7 @@ const navItems = [
   { label: 'Banners', href: '/admin/banners', icon: ImageIcon },
   { label: 'Categories', href: '/admin/categories', icon: Layers3 },
   { label: 'Products', href: '/admin/products', icon: Package },
+  { label: 'Bespoke', href: '/admin/bespoke-orders', icon: Gem },
   { label: 'Coupons', href: '/admin/coupons', icon: TicketPercent },
   { label: 'Orders', href: '/admin/orders', icon: ShoppingCart },
   { label: 'Users', href: '/admin/users', icon: Users },

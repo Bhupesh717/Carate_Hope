@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { apiClient } from '@/lib/api-client';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -13,7 +14,7 @@ interface CategoryItem {
   link: string;
 }
 
-const categoriesData: CategoryItem[] = [
+const mockCategoriesData: CategoryItem[] = [
   {
     id: '1',
     name: 'Artificial Jewellery Brands',
@@ -73,7 +74,32 @@ const categoriesData: CategoryItem[] = [
 ];
 
 export function ExploreCategories() {
+  const [categories, setCategories] = useState<CategoryItem[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await apiClient.get('/public/categories');
+        if (response.data && response.data.success && response.data.data.length > 0) {
+          const mapped: CategoryItem[] = response.data.data.map((cat: any) => ({
+            id: String(cat.id),
+            name: cat.name,
+            subtitle: cat.description || 'Discover our collections',
+            image: cat.image || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80',
+            link: `/shop?category=${cat.id}`,
+          }));
+          setCategories(mapped);
+        } else {
+          setCategories(mockCategoriesData);
+        }
+      } catch (err) {
+        console.error('Error fetching public categories:', err);
+        setCategories(mockCategoriesData);
+      }
+    }
+    fetchCategories();
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -124,7 +150,7 @@ export function ExploreCategories() {
           className="flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-6 pt-2 scroll-smooth"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {categoriesData.map((category) => (
+          {categories.map((category) => (
             <motion.div
               key={category.id}
               whileHover={{ y: -6 }}

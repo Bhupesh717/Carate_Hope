@@ -18,7 +18,9 @@ interface BannerSlide {
   };
 }
 
-const bannerSlides: BannerSlide[] = [
+import { apiClient } from '@/lib/api-client';
+
+const mockSlides: BannerSlide[] = [
   {
     id: 1,
     heading: 'exquisite rings,',
@@ -55,26 +57,57 @@ const bannerSlides: BannerSlide[] = [
 ];
 
 export function BannerCarousel() {
+  const [slides, setSlides] = useState<BannerSlide[]>([]);
   const [current, setCurrent] = useState(0);
   const [autoPlay, setAutoPlay] = useState(true);
 
   useEffect(() => {
-    if (!autoPlay) return;
+    async function fetchBanners() {
+      try {
+        const response = await apiClient.get('/public/banners');
+        if (response.data && response.data.success && response.data.data.length > 0) {
+          const mapped: BannerSlide[] = response.data.data.map((b: any) => ({
+            id: b.id,
+            heading: b.title,
+            subheading: b.badge || '',
+            description: b.description || '',
+            image: b.image,
+            cta: {
+              text: 'Shop Now',
+              href: '/shop',
+            },
+          }));
+          setSlides(mapped);
+        } else {
+          setSlides(mockSlides);
+        }
+      } catch (err) {
+        console.error('Error fetching public banners:', err);
+        setSlides(mockSlides);
+      }
+    }
+    fetchBanners();
+  }, []);
+
+  useEffect(() => {
+    if (!autoPlay || slides.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % bannerSlides.length);
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(interval);
-  }, [autoPlay]);
+  }, [autoPlay, slides.length]);
 
   const next = () => {
-    setCurrent((prev) => (prev + 1) % bannerSlides.length);
+    if (slides.length === 0) return;
+    setCurrent((prev) => (prev + 1) % slides.length);
     setAutoPlay(false);
   };
 
   const prev = () => {
-    setCurrent((prev) => (prev - 1 + bannerSlides.length) % bannerSlides.length);
+    if (slides.length === 0) return;
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
     setAutoPlay(false);
   };
 
@@ -83,7 +116,7 @@ export function BannerCarousel() {
     setAutoPlay(false);
   };
 
-  const slide = bannerSlides[current] || bannerSlides[0];
+  const slide = slides[current] || slides[0] || mockSlides[0];
 
   return (
     <section className="relative overflow-hidden bg-background w-full">
@@ -178,7 +211,7 @@ export function BannerCarousel() {
 
       {/* Dot Indicators (centered at the bottom) */}
       <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-3 items-center">
-        {bannerSlides.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}

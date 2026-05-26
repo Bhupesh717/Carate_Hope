@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { FloatingWhatsAppButton } from '@/components/bespoke/FloatingWhatsAppButton'
 
 export default function StoreLayout({
   children,
@@ -12,6 +13,7 @@ export default function StoreLayout({
       <main className="min-h-screen">
         {children}
       </main>
+      <FloatingWhatsAppButton phoneNumber="919876543210" />
       <Footer />
     </>
   )
