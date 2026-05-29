@@ -21,6 +21,7 @@ export function Navbar() {
   const { user, isAuthenticated } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [isHydrated, setIsHydrated] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -31,8 +32,24 @@ export function Navbar() {
 
   useEffect(() => {
     if (!isHydrated) return;
-    const handleScroll = () => setHasScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', handleScroll);
+    
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      setHasScrolled(currentScrollY > 60);
+
+      if (currentScrollY < lastScrollY || currentScrollY < 60) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        setIsVisible(false);
+      }
+      
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHydrated]);
 
@@ -47,9 +64,12 @@ export function Navbar() {
   return (
     <>
       {/* Main Navbar */}
-      <nav className={`sticky top-0 z-50 transition-all duration-500 ${scrolled
-          ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_24px_rgba(0,0,0,0.08)] border-b border-slate-100'
-          : 'bg-transparent border-b border-black/5'
+      <nav className={`sticky top-0 z-50 transition-all duration-500 ${
+          isVisible ? 'translate-y-0' : '-translate-y-full'
+        } ${
+          scrolled
+            ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_24px_rgba(0,0,0,0.08)] border-b border-slate-100'
+            : 'bg-transparent border-b border-black/5'
         }`}>
         <div className={`mx-auto flex max-w-7xl items-center justify-between px-6 gap-8 transition-all duration-500 ${scrolled ? 'py-2' : 'py-2'
           }`}>
