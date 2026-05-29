@@ -28,12 +28,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         const response = await apiClient.get(`/public/products/${params.id}`);
         if (response.data && response.data.success && response.data.data) {
           const p = response.data.data;
-          
+
           // Map product detail
           const imgs = p.product_images || [];
           const sortedImgs = [...imgs].sort((a, b) => (b.is_primary ? 1 : 0) - (a.is_primary ? 1 : 0));
           const imagePath = sortedImgs[0]?.image_path || 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop';
-          
+
           const mappedProd: Product = {
             id: String(p.id),
             name: p.name,
@@ -143,7 +143,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
-            className="space-y-6"
+            className="space-y-4"
           >
             <div>
               <p className="mb-2 text-sm uppercase text-neutral-600">{product.category}</p>
