@@ -4,15 +4,15 @@ import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
 import { useWishlistStore } from '@/store/wishlist';
 import { useAuthStore } from '@/store/auth';
-import { Heart, ShoppingCart, Menu, X, Search, User } from 'lucide-react';
+import { Heart, ShoppingCart, Menu, X, Search, User, Home, Store, Gem } from 'lucide-react';
 import { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Logo } from '@/components/logo';
 
 const navLinks = [
-  { label: 'Home', href: '/' },
-  { label: 'Shop', href: '/shop' },
-  { label: 'Bespoke', href: '/bespoke-jewellery' },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'Shop', href: '/shop', icon: Store },
+  { label: 'Bespoke', href: '/bespoke-jewellery', icon: Gem },
 ];
 
 export function Navbar() {
@@ -42,7 +42,7 @@ export function Navbar() {
 
   const scrolled = hasScrolled;
   const textColor = 'text-slate-800';
-  const iconHover = 'hover:text-[#b97a57]';
+  const iconHover = 'hover:text-primary';
 
   return (
     <>
@@ -51,27 +51,33 @@ export function Navbar() {
           ? 'bg-white/95 backdrop-blur-xl shadow-[0_1px_24px_rgba(0,0,0,0.08)] border-b border-slate-100'
           : 'bg-transparent border-b border-black/5'
         }`}>
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 gap-8">
+        <div className={`mx-auto flex max-w-7xl items-center justify-between px-6 gap-8 transition-all duration-500 ${scrolled ? 'py-2' : 'py-2'
+          }`}>
 
           {/* Left Nav Links (Desktop) */}
           <div className="hidden lg:flex items-center gap-8 flex-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href + link.label}
-                href={link.href}
-                className={`relative group text-xs font-semibold tracking-[0.18em] uppercase transition-colors duration-300 ${textColor} ${iconHover}`}
-              >
-                {link.label}
-                <span className={`absolute -bottom-0.5 left-0 h-px w-0 group-hover:w-full transition-all duration-300 bg-[#b97a57]`} />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.href + link.label}
+                  href={link.href}
+                  className={`relative group p-1.5 transition-colors duration-300 ${textColor} ${iconHover}`}
+                  title={link.label}
+                >
+                  <Icon className="h-5.5 w-5.5 stroke-[1.5]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-px w-0 group-hover:w-full transition-all duration-300 bg-primary" />
+                </Link>
+              );
+            })}
           </div>
 
           {/* Logo - centered */}
           <Link href="/" className="flex-shrink-0 mx-auto lg:mx-0">
             <Logo
-              className="h-9"
+              className={`transition-all duration-500 ${scrolled ? 'h-14' : 'h-24'}`}
               textColorClass="text-slate-800"
+              textSizeClass={scrolled ? 'text-xl md:text-2xl lg:text-3xl' : 'text-4xl md:text-5xl lg:text-6xl'}
             />
           </Link>
 
@@ -94,7 +100,7 @@ export function Navbar() {
             >
               <Heart className="h-4 w-4" />
               {wishlistCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c88a6d] text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {wishlistCount}
                 </span>
               )}
@@ -108,7 +114,7 @@ export function Navbar() {
             >
               <ShoppingCart className="h-4 w-4" />
               {cartCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c88a6d] text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {cartCount}
                 </span>
               )}
@@ -120,8 +126,8 @@ export function Navbar() {
                 <Link
                   href="/profile"
                   className={`ml-2 flex items-center gap-2 px-4 py-2.5 text-[10px] tracking-[0.2em] font-semibold uppercase transition-all duration-300 rounded-none ${scrolled
-                      ? 'bg-slate-100 text-slate-800 hover:bg-slate-200'
-                      : 'bg-[#f5ece6] text-[#b97a57] hover:bg-[#ebd4c8]'
+                    ? 'bg-slate-100 text-slate-800 hover:bg-slate-200'
+                    : 'bg-muted text-primary hover:bg-border'
                     }`}
                 >
                   <User className="w-4 h-4" />
@@ -131,8 +137,8 @@ export function Navbar() {
                 <Link
                   href="/login"
                   className={`ml-2 flex items-center gap-2 px-5 py-2.5 text-[10px] tracking-[0.2em] font-semibold uppercase transition-all duration-300 rounded-none ${scrolled
-                      ? 'bg-[#b97a57] text-white hover:bg-[#a06648]'
-                      : 'bg-[#b97a57] text-white hover:bg-[#a06648] backdrop-blur-sm'
+                    ? 'bg-primary text-white hover:bg-primary/90'
+                    : 'bg-primary text-white hover:bg-primary/90 backdrop-blur-sm'
                     }`}
                 >
                   <User className="w-4 h-4" />
@@ -149,7 +155,7 @@ export function Navbar() {
             <Link href="/wishlist" className={`relative ${textColor} ${iconHover}`} title="Wishlist">
               <Heart className="h-4 w-4" />
               {wishlistCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c88a6d] text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {wishlistCount}
                 </span>
               )}
@@ -157,7 +163,7 @@ export function Navbar() {
             <Link href="/cart" className={`relative ${textColor} ${iconHover}`} title="Cart">
               <ShoppingCart className="h-4 w-4" />
               {cartCount > 0 && (
-                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c88a6d] text-[10px] font-bold text-white">
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
                   {cartCount}
                 </span>
               )}
@@ -221,9 +227,12 @@ export function Navbar() {
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-between py-4 text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 hover:text-[#b97a57] transition-colors border-b border-slate-50"
+                      className="flex items-center justify-between py-4 text-sm font-semibold tracking-[0.15em] uppercase text-slate-700 hover:text-primary transition-colors border-b border-slate-50"
                     >
-                      {link.label}
+                      <span className="flex items-center gap-3">
+                        <link.icon className="w-4 h-4 stroke-[1.5] text-slate-500" />
+                        {link.label}
+                      </span>
                     </Link>
                   </motion.div>
                 ))}
@@ -246,7 +255,7 @@ export function Navbar() {
                     <Link
                       href="/login"
                       onClick={() => setIsOpen(false)}
-                      className="flex items-center justify-center gap-2 w-full bg-[#b97a57] hover:bg-[#a06648] text-white py-4 text-xs tracking-[0.2em] uppercase font-semibold transition-colors"
+                      className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-white py-4 text-xs tracking-[0.2em] uppercase font-semibold transition-colors"
                     >
                       <User className="w-4 h-4" />
                       Sign In

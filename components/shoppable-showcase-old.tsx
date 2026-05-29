@@ -68,7 +68,7 @@ export function ShoppableShowcase() {
 
           {/* Text Content */}
           <div className="space-y-6 md:pl-8 max-w-md">
-            <h3 className="text-3xl md:text-4xl font-light tracking-wide text-[#b97a57] font-serif leading-tight">
+            <h3 className="text-3xl md:text-4xl font-light tracking-wide text-primary font-serif leading-tight">
               Curated by color
             </h3>
             <p className="text-slate-600 leading-relaxed text-sm md:text-base font-light">
@@ -76,7 +76,7 @@ export function ShoppableShowcase() {
             </p>
             <div className="pt-2">
               <Link href="/shop">
-                <Button className="rounded-none bg-[#c88a6d] hover:bg-[#b0775d] text-white px-8 py-6 text-xs tracking-widest font-light transition-colors uppercase">
+                <Button className="rounded-none bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-xs tracking-widest font-light transition-colors uppercase">
                   Shop Now
                 </Button>
               </Link>
@@ -89,7 +89,7 @@ export function ShoppableShowcase() {
 
           {/* Text Content (ordered first on mobile, left on desktop) */}
           <div className="space-y-6 max-w-md md:order-1 order-2">
-            <h3 className="text-3xl md:text-4xl font-light tracking-wide text-[#b97a57] font-serif leading-tight">
+            <h3 className="text-3xl md:text-4xl font-light tracking-wide text-primary font-serif leading-tight">
               Make the connection
             </h3>
             <p className="text-slate-600 leading-relaxed text-sm md:text-base font-light">
@@ -97,7 +97,7 @@ export function ShoppableShowcase() {
             </p>
             <div className="pt-2">
               <Link href="/shop">
-                <Button className="rounded-none bg-[#c88a6d] hover:bg-[#b0775d] text-white px-8 py-6 text-xs tracking-widest font-light transition-colors uppercase">
+                <Button className="rounded-none bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-xs tracking-widest font-light transition-colors uppercase">
                   Shop Now
                 </Button>
               </Link>

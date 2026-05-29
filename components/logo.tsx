@@ -1,58 +1,45 @@
 'use client';
 
-import React from 'react';
+import Image from 'next/image';
 
 interface LogoProps {
+  /** Tailwind height class for the wrapper, e.g. "h-20" or "h-14" */
   className?: string;
   textColorClass?: string;
+  /** Tailwind text-size classes for the brand name, e.g. "text-2xl md:text-3xl" */
+  textSizeClass?: string;
+  /** Hide the brand text (for footer / login / register pages that only want the icon) */
+  iconOnly?: boolean;
 }
 
-export function Logo({ className = "h-8", textColorClass = "text-foreground" }: LogoProps) {
+export function Logo({
+  className = 'h-20',
+  textColorClass = 'text-foreground',
+  textSizeClass = 'text-4xl md:text-5xl lg:text-6xl',
+  iconOnly = false,
+}: LogoProps) {
   return (
-    <div className={`flex items-center gap-2 ${className}`}>
-      {/* Icon: Diamond + Star (Carat + Hope) */}
-      <svg
-        viewBox="0 0 100 100"
-        className="h-full aspect-square text-[#b97a57] shrink-0"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M50 15 L80 40 L50 85 L20 40 Z"
-          stroke="currentColor"
-          strokeWidth="4"
-          strokeLinejoin="round"
+    <div className={`flex items-center gap-3 ${className}`}>
+      {/* Logo image — no clipping, no transforms */}
+      <div className="relative h-full" style={{ aspectRatio: '1 / 1' }}>
+        <Image
+          src="/logo.png"
+          alt="CarateHope logo"
+          fill
+          sizes="15vw"
+          className="object-contain"
+          priority
         />
-        <path
-          d="M20 40 H80"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <path
-          d="M50 15 L50 85"
-          stroke="currentColor"
-          strokeWidth="3.5"
-        />
-        <path
-          d="M50 15 L33 40 L50 85"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        <path
-          d="M50 15 L67 40 L50 85"
-          stroke="currentColor"
-          strokeWidth="2"
-        />
-        {/* Star in the center */}
-        <path
-          d="M50 28 L53 37 L62 40 L53 43 L50 52 L47 43 L38 40 L47 37 Z"
-          fill="currentColor"
-        />
-      </svg>
-      {/* Brand Text */}
-      <span className={`font-serif tracking-[0.2em] text-lg font-light uppercase transition-colors duration-300 ${textColorClass}`}>
-        Carate<span className="font-semibold text-[#b97a57]">Hope</span>
-      </span>
+      </div>
+
+      {/* Brand text */}
+      {!iconOnly && (
+        <span
+          className={`font-serif tracking-[0.05em] font-light uppercase transition-all duration-500 ${textSizeClass} ${textColorClass}`}
+        >
+          Carate<span className="font-semibold text-primary">Hope</span>
+        </span>
+      )}
     </div>
   );
 }

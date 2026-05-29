@@ -94,7 +94,7 @@ export default function AdminDashboard() {
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" />
                 <YAxis tick={{ fontSize: 12 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
                 <Tooltip formatter={(v: number) => [`₹${v.toLocaleString()}`, 'Revenue']} />
-                <Area type="monotone" dataKey="revenue" stroke="#b97a57" fill="url(#revGrad)" strokeWidth={2} />
+                <Area type="monotone" dataKey="revenue" stroke="var(--primary)" fill="url(#revGrad)" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           </div>

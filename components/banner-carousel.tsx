@@ -148,7 +148,7 @@ export function BannerCarousel() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
-                className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-[#b97a57] block"
+                className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-primary block"
               >
                 {slide.subheading}
               </motion.span>
@@ -157,7 +157,7 @@ export function BannerCarousel() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light font-serif text-[#b97a57] uppercase leading-tight tracking-wide"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light font-serif text-primary uppercase leading-tight tracking-wide"
               >
                 {slide.heading}
               </motion.h1>

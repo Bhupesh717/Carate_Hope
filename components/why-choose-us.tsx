@@ -24,12 +24,12 @@ export function WhyChooseUs() {
             {/* Header */}
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="h-[2px] w-12 bg-[#b97a57]" />
-                <span className="text-xs font-bold tracking-[0.15em] uppercase text-[#b97a57]">
+                <div className="h-[2px] w-12 bg-primary" />
+                <span className="text-xs font-bold tracking-[0.15em] uppercase text-primary">
                   Excellence in Craftsmanship
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#b97a57] leading-[1.1] uppercase">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-primary leading-[1.1] uppercase">
                 Why Choose<br />
                 CarateHope<br />
                 Fine Jewelry
@@ -40,7 +40,7 @@ export function WhyChooseUs() {
             <div className="grid sm:grid-cols-2 gap-x-8 gap-y-8 pt-4">
               {features.map((feature, idx) => (
                 <div key={idx} className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#faf6f3] text-[#b97a57]">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-muted text-primary">
                     {feature.icon}
                   </div>
                   <span className="text-sm font-medium text-slate-800 leading-tight">
@@ -66,7 +66,7 @@ export function WhyChooseUs() {
                 </div>
                 <div className="absolute -bottom-6 left-3 right-3 bg-white rounded-xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] text-center border border-slate-50">
                   <h4 className="text-sm font-bold text-slate-800 whitespace-nowrap">Royal Ruby</h4>
-                  <p className="text-[10px] font-bold tracking-widest text-[#b97a57] uppercase mt-1.5">Exclusive Collection</p>
+                  <p className="text-[10px] font-bold tracking-widest text-primary uppercase mt-1.5">Exclusive Collection</p>
                 </div>
               </div>
 
@@ -81,7 +81,7 @@ export function WhyChooseUs() {
                 </div>
                 <div className="absolute -bottom-6 left-3 right-3 bg-white rounded-xl p-4 shadow-[0_8px_30px_rgb(0,0,0,0.08)] text-center border border-slate-50">
                   <h4 className="text-sm font-bold text-slate-800 whitespace-nowrap">Eternity Ring</h4>
-                  <p className="text-[10px] font-bold tracking-widest text-[#b97a57] uppercase mt-1.5">Bridal Collection</p>
+                  <p className="text-[10px] font-bold tracking-widest text-primary uppercase mt-1.5">Bridal Collection</p>
                 </div>
               </div>
 
@@ -89,11 +89,11 @@ export function WhyChooseUs() {
 
             {/* Button */}
             <div className="mt-20 w-full max-w-[400px]">
-              <Link href="/shop" className="group flex items-center justify-center gap-3 w-full py-4 rounded-full border border-[#e8d5cc] hover:border-[#b97a57] transition-all bg-white hover:bg-[#faf6f3]">
-                <span className="text-xs font-bold tracking-[0.15em] uppercase text-slate-800 group-hover:text-[#b97a57] transition-colors">
+              <Link href="/shop" className="group flex items-center justify-center gap-3 w-full py-4 rounded-full border border-border hover:border-primary transition-all bg-white hover:bg-muted">
+                <span className="text-xs font-bold tracking-[0.15em] uppercase text-slate-800 group-hover:text-primary transition-colors">
                   Shop Our Collection
                 </span>
-                <ArrowRight className="w-4 h-4 text-[#b97a57]" />
+                <ArrowRight className="w-4 h-4 text-primary" />
               </Link>
             </div>
 

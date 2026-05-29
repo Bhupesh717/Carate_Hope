@@ -21,7 +21,7 @@ const staggerContainer: Variants = {
 
 export default function ContactPage() {
     return (
-        <div className="bg-[#faf6f3] min-h-screen">
+        <div className="bg-muted min-h-screen">
             <PageHeader 
                 eyebrow="Get In Touch"
                 icon={Mail}
@@ -46,9 +46,9 @@ export default function ContactPage() {
                         >
                             <div>
                                 <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-serif text-slate-900 leading-snug">
-                                    Our <span className="italic text-[#b97a57]">Store</span>
+                                    Our <span className="italic text-primary">Store</span>
                                 </motion.h2>
-                                <motion.div variants={fadeUp} className="w-12 h-px bg-[#b97a57] mt-6" />
+                                <motion.div variants={fadeUp} className="w-12 h-px bg-primary mt-6" />
                                 <motion.p variants={fadeUp} className="mt-6 text-slate-500 font-light leading-relaxed">
                                     Visit our flagship store to explore our exclusive collections in person, or contact our customer service team for online assistance.
                                 </motion.p>
@@ -56,7 +56,7 @@ export default function ContactPage() {
 
                             <div className="space-y-8">
                                 <motion.div variants={fadeUp} className="flex items-start gap-4">
-                                    <div className="bg-white p-3 rounded-full shadow-sm text-[#b97a57] shrink-0">
+                                    <div className="bg-white p-3 rounded-full shadow-sm text-primary shrink-0">
                                         <MapPin className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -70,7 +70,7 @@ export default function ContactPage() {
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="flex items-start gap-4">
-                                    <div className="bg-white p-3 rounded-full shadow-sm text-[#b97a57] shrink-0">
+                                    <div className="bg-white p-3 rounded-full shadow-sm text-primary shrink-0">
                                         <Phone className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -82,7 +82,7 @@ export default function ContactPage() {
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="flex items-start gap-4">
-                                    <div className="bg-white p-3 rounded-full shadow-sm text-[#b97a57] shrink-0">
+                                    <div className="bg-white p-3 rounded-full shadow-sm text-primary shrink-0">
                                         <Mail className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -94,7 +94,7 @@ export default function ContactPage() {
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="flex items-start gap-4">
-                                    <div className="bg-white p-3 rounded-full shadow-sm text-[#b97a57] shrink-0">
+                                    <div className="bg-white p-3 rounded-full shadow-sm text-primary shrink-0">
                                         <Clock className="w-6 h-6" />
                                     </div>
                                     <div>
@@ -123,31 +123,31 @@ export default function ContactPage() {
                                 <motion.div variants={fadeUp} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="space-y-2">
                                         <label htmlFor="firstName" className="text-sm font-medium text-slate-700">First Name</label>
-                                        <input type="text" id="firstName" className="w-full px-4 py-3 bg-[#faf6f3] border-transparent focus:bg-white focus:border-[#b97a57] focus:ring-1 focus:ring-[#b97a57] rounded-md outline-none transition-all text-slate-800" placeholder="John" required />
+                                        <input type="text" id="firstName" className="w-full px-4 py-3 bg-muted border-transparent focus:bg-white focus:border-primary focus:ring-1 focus:ring-[var(--primary)] rounded-md outline-none transition-all text-slate-800" placeholder="John" required />
                                     </div>
                                     <div className="space-y-2">
                                         <label htmlFor="lastName" className="text-sm font-medium text-slate-700">Last Name</label>
-                                        <input type="text" id="lastName" className="w-full px-4 py-3 bg-[#faf6f3] border-transparent focus:bg-white focus:border-[#b97a57] focus:ring-1 focus:ring-[#b97a57] rounded-md outline-none transition-all text-slate-800" placeholder="Doe" required />
+                                        <input type="text" id="lastName" className="w-full px-4 py-3 bg-muted border-transparent focus:bg-white focus:border-primary focus:ring-1 focus:ring-[var(--primary)] rounded-md outline-none transition-all text-slate-800" placeholder="Doe" required />
                                     </div>
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="space-y-2">
                                     <label htmlFor="email" className="text-sm font-medium text-slate-700">Email Address</label>
-                                    <input type="email" id="email" className="w-full px-4 py-3 bg-[#faf6f3] border-transparent focus:bg-white focus:border-[#b97a57] focus:ring-1 focus:ring-[#b97a57] rounded-md outline-none transition-all text-slate-800" placeholder="john@example.com" required />
+                                    <input type="email" id="email" className="w-full px-4 py-3 bg-muted border-transparent focus:bg-white focus:border-primary focus:ring-1 focus:ring-[var(--primary)] rounded-md outline-none transition-all text-slate-800" placeholder="john@example.com" required />
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="space-y-2">
                                     <label htmlFor="subject" className="text-sm font-medium text-slate-700">Subject</label>
-                                    <input type="text" id="subject" className="w-full px-4 py-3 bg-[#faf6f3] border-transparent focus:bg-white focus:border-[#b97a57] focus:ring-1 focus:ring-[#b97a57] rounded-md outline-none transition-all text-slate-800" placeholder="How can we help?" required />
+                                    <input type="text" id="subject" className="w-full px-4 py-3 bg-muted border-transparent focus:bg-white focus:border-primary focus:ring-1 focus:ring-[var(--primary)] rounded-md outline-none transition-all text-slate-800" placeholder="How can we help?" required />
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="space-y-2">
                                     <label htmlFor="message" className="text-sm font-medium text-slate-700">Message</label>
-                                    <textarea id="message" rows={5} className="w-full px-4 py-3 bg-[#faf6f3] border-transparent focus:bg-white focus:border-[#b97a57] focus:ring-1 focus:ring-[#b97a57] rounded-md outline-none transition-all text-slate-800 resize-none" placeholder="Write your message here..." required></textarea>
+                                    <textarea id="message" rows={5} className="w-full px-4 py-3 bg-muted border-transparent focus:bg-white focus:border-primary focus:ring-1 focus:ring-[var(--primary)] rounded-md outline-none transition-all text-slate-800 resize-none" placeholder="Write your message here..." required></textarea>
                                 </motion.div>
 
                                 <motion.div variants={fadeUp} className="pt-2">
-                                    <Button type="submit" className="w-full bg-[#b97a57] hover:bg-[#a06648] text-white py-6 rounded-none text-xs tracking-[0.2em] uppercase transition-colors flex items-center justify-center gap-2">
+                                    <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-6 rounded-none text-xs tracking-[0.2em] uppercase transition-colors flex items-center justify-center gap-2">
                                         Send Message
                                         <Send className="w-4 h-4" />
                                     </Button>

@@ -29,7 +29,7 @@ export default function AboutPage() {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   return (
-    <div className="bg-[#faf6f3] min-h-screen">
+    <div className="bg-muted min-h-screen">
       {/* Hero Header */}
       <section ref={heroRef} className="relative overflow-hidden py-32 md:py-48 flex items-center justify-center min-h-[60vh]">
         <div className="absolute inset-0 z-0 overflow-hidden">
@@ -90,9 +90,9 @@ export default function AboutPage() {
               className="space-y-8"
             >
               <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light text-slate-900">
-                Our <span className="italic text-[#b97a57]">Heritage</span>
+                Our <span className="italic text-primary">Heritage</span>
               </motion.h2>
-              <motion.div variants={fadeUp} className="w-12 h-px bg-[#b97a57]" />
+              <motion.div variants={fadeUp} className="w-12 h-px bg-primary" />
               <motion.p variants={fadeUp} className="leading-relaxed text-slate-600 text-lg font-light">
                 Founded with a vision to redefine luxury, CarateHope was born from a passion for creating timeless pieces that celebrate life's most precious moments. Every piece is meticulously shaped by our master artisans using only the finest, ethically sourced materials.
               </motion.p>
@@ -101,7 +101,7 @@ export default function AboutPage() {
               </motion.p>
               <motion.div variants={fadeUp} className="pt-4">
                 <Link href="/shop">
-                  <Button className="bg-[#b97a57] hover:bg-[#a06648] text-white px-8 py-6 rounded-none text-xs tracking-[0.2em] uppercase transition-colors">
+                  <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 rounded-none text-xs tracking-[0.2em] uppercase transition-colors">
                     Explore Collections
                   </Button>
                 </Link>
@@ -112,7 +112,7 @@ export default function AboutPage() {
       </section>
 
       {/* Customer Knowledge Section */}
-      <section className="relative py-24 overflow-hidden bg-[#faf6f3]">
+      <section className="relative py-24 overflow-hidden bg-muted">
         {/* Subtle topogaphic-like pattern overlay */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83v58.34l-.83.83H5.373l-.83-.83V.83l.83-.83h49.254zM53 58V2H7v56h46zM26 14l-2-2v42l2 2V14zm10 0l-2-2v42l2 2V14z' fill='%23000000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")` }} />
 
@@ -152,7 +152,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="absolute left-0 bottom-0 w-[55%] h-[60%] z-20 shadow-2xl border-8 border-[#faf6f3]"
+                className="absolute left-0 bottom-0 w-[55%] h-[60%] z-20 shadow-2xl border-8 border-[var(--muted)]"
               >
                 <img src="/images/ig-1.png" alt="Gold earrings" className="w-full h-full object-cover" />
               </motion.div>
@@ -171,9 +171,9 @@ export default function AboutPage() {
             className="text-center mb-16 space-y-4"
           >
             <motion.h2 variants={fadeUp} className="text-4xl md:text-5xl font-light text-slate-900">
-              The <span className="italic text-[#b97a57]">Pillars</span> of Our Brand
+              The <span className="italic text-primary">Pillars</span> of Our Brand
             </motion.h2>
-            <motion.div variants={fadeUp} className="w-12 h-px bg-[#b97a57] mx-auto" />
+            <motion.div variants={fadeUp} className="w-12 h-px bg-primary mx-auto" />
           </motion.div>
 
           <div className="grid gap-8 md:grid-cols-3">
@@ -200,9 +200,9 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="group p-10 bg-[#faf6f3] hover:bg-[#b97a57] transition-colors duration-500 rounded-2xl text-center flex flex-col items-center"
+                className="group p-10 bg-muted hover:bg-primary transition-colors duration-500 rounded-2xl text-center flex flex-col items-center"
               >
-                <div className="text-4xl text-[#b97a57] group-hover:text-white transition-colors duration-500 mb-6">{value.icon}</div>
+                <div className="text-4xl text-primary group-hover:text-white transition-colors duration-500 mb-6">{value.icon}</div>
                 <h3 className="text-xl font-medium text-slate-900 group-hover:text-white transition-colors duration-500 mb-4">{value.title}</h3>
                 <p className="text-slate-600 group-hover:text-white/80 transition-colors duration-500 font-light leading-relaxed">{value.description}</p>
               </motion.div>

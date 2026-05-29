@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
               e.preventDefault();
               toggleWishlist(product);
             }}
-            className="absolute right-3 top-3 rounded-full bg-white/90 backdrop-blur p-2 shadow-md transition-all duration-200 hover:scale-110 hover:bg-accent hover:text-white"
+            className="absolute right-3 top-3 rounded-full bg-white/90 backdrop-blur p-2 shadow-md transition-all duration-200 hover:scale-110 hover:bg-primary hover:text-primary-foreground"
             aria-label={inWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
           >
             <Heart
@@ -71,7 +71,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <Button
             onClick={() => addToCart(product)}
             size="sm"
-            className="bg-[#c88a6d] hover:bg-[#b0775d] text-white rounded-none transition-colors px-4 text-xs tracking-wider uppercase"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none transition-colors px-4 text-xs tracking-wider uppercase"
           >
             Add
           </Button>

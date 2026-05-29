@@ -181,7 +181,7 @@ export default function ShopPage() {
         {/* Products Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-24">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#b97a57] border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           </div>
         ) : products.length > 0 ? (
           <motion.div

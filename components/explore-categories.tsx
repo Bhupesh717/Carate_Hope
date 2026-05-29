@@ -19,7 +19,7 @@ const mockCategoriesData: CategoryItem[] = [
     id: '1',
     name: 'Artificial Jewellery Brands',
     subtitle: 'Trendy & affordable designs',
-    image: 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&auto=format&fit=crop&q=80',
+    image: '/images/bespoke/necklace.png',
     link: '/shop?category=artificial',
   },
   {
@@ -33,14 +33,14 @@ const mockCategoriesData: CategoryItem[] = [
     id: '3',
     name: 'Bridal Jewellery Stores',
     subtitle: 'Heritage sets for your big day',
-    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80',
+    image: '/images/bespoke/earrings.png',
     link: '/shop?category=bridal',
   },
   {
     id: '4',
     name: 'Wholesale Jewellery Suppliers',
     subtitle: 'Bulk premium manufacturing',
-    image: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&auto=format&fit=crop&q=80',
+    image: '/images/bespoke/ring.png',
     link: '/shop?category=wholesale',
   },
   {
@@ -155,7 +155,7 @@ export function ExploreCategories() {
               key={category.id}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
-              className="w-[280px] h-[370px] sm:w-[300px] sm:h-[400px] flex-shrink-0 snap-start relative overflow-hidden rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-100/50 group cursor-pointer"
+              className="w-[280px] h-[370px] sm:w-[300px] sm:h-[400px] flex-shrink-0 snap-start relative overflow-hidden rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-slate-100/50 group cursor-pointer"
             >
               <Link href={category.link} className="absolute inset-0 block">
                 {/* Background Image */}

@@ -85,7 +85,7 @@ export default function OrdersPage() {
     loadOrders();
   }, [isAuthenticated]);
 
-  if (!isMounted) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#b97a57]" /></div>;
+  if (!isMounted) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>;
 
   const handleLogout = () => {
     logout();
@@ -93,7 +93,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="bg-[#faf6f3] min-h-screen pb-24">
+    <div className="bg-muted min-h-screen pb-24">
       <PageHeader
         title="My Orders"
         eyebrow="History"
@@ -105,12 +105,12 @@ export default function OrdersPage() {
         <div className="grid md:grid-cols-[250px_1fr] gap-10">
 
           {/* Sidebar Menu */}
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-[#e8d5cc]/60 h-fit space-y-2">
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-border/60 h-fit space-y-2">
             <Link href="/profile" className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors font-medium text-sm">
               <User className="w-4 h-4" />
               Profile Info
             </Link>
-            <Link href="/orders" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#faf6f3] text-[#b97a57] font-medium text-sm transition-colors">
+            <Link href="/orders" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted text-primary font-medium text-sm transition-colors">
               <Package className="w-4 h-4" />
               Order History
             </Link>
@@ -128,13 +128,13 @@ export default function OrdersPage() {
           </div>
 
           {/* Main Content */}
-          <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#e8d5cc]/60">
-            <h2 className="text-2xl font-serif text-[#2a2118] mb-8">Order History</h2>
+          <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-border/60">
+            <h2 className="text-2xl font-serif text-foreground mb-8">Order History</h2>
 
             <div className="space-y-6">
               {isLoading ? (
                 <div className="flex justify-center items-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-[#b97a57]" />
+                  <Loader2 className="w-8 h-8 animate-spin text-primary" />
                 </div>
               ) : orders.length > 0 ? (
                 orders.map((order) => (

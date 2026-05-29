@@ -33,16 +33,17 @@ const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(10, "Phone number is required"),
-  
+  country: z.string().optional(),
+
   jewelleryType: z.string().min(1, "Please select a jewellery type"),
   metalType: z.string().min(1, "Please select a metal type"),
+  metalSubType: z.string().optional(),
   goldPurity: z.string().optional(),
   gemstoneSelection: z.string().optional(),
   ringSize: z.string().optional(),
-  budgetRange: z.array(z.number()).default([50000]),
   occasion: z.string().optional(),
   deadline: z.string().optional(),
-  
+
   description: z.string().min(10, "Please provide a detailed description (min 10 chars)"),
   inspirationText: z.string().optional(),
   engravingText: z.string().optional(),
@@ -69,8 +70,9 @@ export default function BespokeRequestPage() {
     resolver: zodResolver(formSchema),
     mode: 'onTouched',
     defaultValues: {
-      budgetRange: [50000],
       jewelleryType: '',
+      metalType: '',
+      metalSubType: '',
     }
   });
 
@@ -78,7 +80,7 @@ export default function BespokeRequestPage() {
 
   const nextStep = async () => {
     let fieldsToValidate: any[] = [];
-    
+
     if (currentStep === 0) fieldsToValidate = ['name', 'email', 'phone'];
     if (currentStep === 1) fieldsToValidate = ['jewelleryType', 'metalType'];
     if (currentStep === 2) fieldsToValidate = ['description'];
@@ -100,10 +102,9 @@ export default function BespokeRequestPage() {
     try {
       const payload: BespokeOrderRequestPayload = {
         ...data,
-        budgetRange: `₹${data.budgetRange[0]}+`,
         inspirationImages: images,
       };
-      
+
       const response = await bespokeService.submitCustomOrder(payload);
       setOrderId(response.data.id);
       setIsSuccess(true);
@@ -118,7 +119,7 @@ export default function BespokeRequestPage() {
   if (isSuccess) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
-        <motion.div 
+        <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           className="max-w-md w-full bg-card p-10 rounded-3xl border border-border text-center shadow-xl relative overflow-hidden"
@@ -160,10 +161,10 @@ export default function BespokeRequestPage() {
         <div className="bg-card border border-border rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden">
           {/* Decorative subtle background */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-bespoke-gold/5 rounded-full blur-3xl -mr-48 -mt-48 pointer-events-none" />
-          
+
           <form onSubmit={handleSubmit(onSubmit)} className="relative z-10">
             <AnimatePresence mode="wait">
-              
+
               {/* STEP 1: Details */}
               {currentStep === 0 && (
                 <motion.div
@@ -185,10 +186,47 @@ export default function BespokeRequestPage() {
                       <Input id="email" type="email" {...register('email')} className={errors.email ? 'border-destructive' : ''} />
                       {errors.email && <p className="text-destructive text-sm">{errors.email.message}</p>}
                     </div>
-                    <div className="space-y-2 md:col-span-2">
+                    <div className="space-y-2 md:col-span-1">
                       <Label htmlFor="phone">Phone Number *</Label>
                       <Input id="phone" type="tel" {...register('phone')} className={errors.phone ? 'border-destructive' : ''} />
                       {errors.phone && <p className="text-destructive text-sm">{errors.phone.message}</p>}
+                    </div>
+                    <div className="space-y-2 md:col-span-1">
+                      <Label htmlFor="country">Country</Label>
+                      <Controller
+                        name="country"
+                        control={control}
+                        render={({ field }) => (
+                          <Select onValueChange={field.onChange} value={field.value ?? ''}>
+                            <SelectTrigger id="country">
+                              <SelectValue placeholder="Select country" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-52 overflow-y-auto">
+                              <SelectItem value="India">India</SelectItem>
+                              <SelectItem value="United States">United States</SelectItem>
+                              <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                              <SelectItem value="United Arab Emirates">United Arab Emirates</SelectItem>
+                              <SelectItem value="Canada">Canada</SelectItem>
+                              <SelectItem value="Australia">Australia</SelectItem>
+                              <SelectItem value="Singapore">Singapore</SelectItem>
+                              <SelectItem value="Malaysia">Malaysia</SelectItem>
+                              <SelectItem value="Saudi Arabia">Saudi Arabia</SelectItem>
+                              <SelectItem value="Qatar">Qatar</SelectItem>
+                              <SelectItem value="Kuwait">Kuwait</SelectItem>
+                              <SelectItem value="Bahrain">Bahrain</SelectItem>
+                              <SelectItem value="Oman">Oman</SelectItem>
+                              <SelectItem value="Germany">Germany</SelectItem>
+                              <SelectItem value="France">France</SelectItem>
+                              <SelectItem value="Italy">Italy</SelectItem>
+                              <SelectItem value="Netherlands">Netherlands</SelectItem>
+                              <SelectItem value="Switzerland">Switzerland</SelectItem>
+                              <SelectItem value="New Zealand">New Zealand</SelectItem>
+                              <SelectItem value="South Africa">South Africa</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        )}
+                      />
                     </div>
                   </div>
                 </motion.div>
@@ -204,7 +242,7 @@ export default function BespokeRequestPage() {
                   className="space-y-8"
                 >
                   <h3 className="text-2xl font-serif border-b border-border pb-4 mb-6">Jewellery Preferences</h3>
-                  
+
                   <div className="space-y-4">
                     <Label className="text-base">What are we creating? *</Label>
                     <Controller
@@ -218,29 +256,91 @@ export default function BespokeRequestPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                    {/* Metal Type — parent category */}
                     <div className="space-y-2">
                       <Label>Metal Type *</Label>
                       <Controller
                         name="metalType"
                         control={control}
                         render={({ field }) => (
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={(val) => {
+                              field.onChange(val);
+                              // reset sub-type when parent changes
+                            }}
+                            value={field.value}
+                          >
                             <SelectTrigger className={errors.metalType ? 'border-destructive' : ''}>
                               <SelectValue placeholder="Select metal" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Yellow Gold">Yellow Gold</SelectItem>
-                              <SelectItem value="White Gold">White Gold</SelectItem>
-                              <SelectItem value="Rose Gold">Rose Gold</SelectItem>
-                              <SelectItem value="Platinum">Platinum</SelectItem>
+
+                              <SelectItem value="Gold">Gold</SelectItem>
                               <SelectItem value="Silver">Silver</SelectItem>
+                              <SelectItem value="Platinum">Platinum</SelectItem>
+                              <SelectItem value="Two-Tone">Two-Tone</SelectItem>
                             </SelectContent>
                           </Select>
                         )}
                       />
                       {errors.metalType && <p className="text-destructive text-sm">{errors.metalType.message}</p>}
                     </div>
-                    
+
+                    {/* Metal Sub-Type — depends on parent */}
+                    {formData.metalType && (
+                      <div className="space-y-2">
+                        <Label>
+                          {formData.metalType === 'Gold' && 'Gold Colour'}
+                          {formData.metalType === 'Silver' && 'Silver Grade'}
+                          {formData.metalType === 'Platinum' && 'Platinum Purity'}
+                          {formData.metalType === 'Two-Tone' && 'Combination'}
+                        </Label>
+                        <Controller
+                          name="metalSubType"
+                          control={control}
+                          render={({ field }) => (
+                            <Select onValueChange={field.onChange} value={field.value ?? ''}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select variant" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {formData.metalType === 'Gold' && (
+                                  <>
+                                    <SelectItem value="Yellow Gold">Yellow Gold</SelectItem>
+                                    <SelectItem value="Rose Gold">Rose Gold</SelectItem>
+                                    <SelectItem value="White Gold">White Gold</SelectItem>
+                                    <SelectItem value="Green Gold">Green Gold</SelectItem>
+                                  </>
+                                )}
+                                {formData.metalType === 'Silver' && (
+                                  <>
+                                    <SelectItem value="Sterling Silver (925)">Sterling Silver (925)</SelectItem>
+                                    <SelectItem value="Fine Silver (999)">Fine Silver (999)</SelectItem>
+                                    <SelectItem value="Argentium Silver">Argentium Silver</SelectItem>
+                                  </>
+                                )}
+                                {formData.metalType === 'Platinum' && (
+                                  <>
+                                    <SelectItem value="950 Platinum">950 Platinum</SelectItem>
+                                    <SelectItem value="900 Platinum">900 Platinum</SelectItem>
+                                    <SelectItem value="850 Platinum">850 Platinum</SelectItem>
+                                  </>
+                                )}
+                                {formData.metalType === 'Two-Tone' && (
+                                  <>
+                                    <SelectItem value="Yellow Gold + White Gold">Yellow Gold + White Gold</SelectItem>
+                                    <SelectItem value="Yellow Gold + Platinum">Yellow Gold + Platinum</SelectItem>
+                                    <SelectItem value="Rose Gold + White Gold">Rose Gold + White Gold</SelectItem>
+                                    <SelectItem value="Gold + Silver">Gold + Silver</SelectItem>
+                                  </>
+                                )}
+                              </SelectContent>
+                            </Select>
+                          )}
+                        />
+                      </div>
+                    )}
+
                     <div className="space-y-2">
                       <Label>Primary Gemstone</Label>
                       <Input {...register('gemstoneSelection')} placeholder="e.g. Diamond, Sapphire, None" />
@@ -252,29 +352,6 @@ export default function BespokeRequestPage() {
                         <Input {...register('ringSize')} placeholder="e.g. US 6, UK L" />
                       </div>
                     )}
-                    
-                    <div className="space-y-4 md:col-span-2">
-                      <div className="flex justify-between">
-                        <Label>Estimated Budget (INR)</Label>
-                        <span className="text-sm font-medium text-bespoke-gold-dark">
-                          ₹{formData.budgetRange?.[0]?.toLocaleString()} +
-                        </span>
-                      </div>
-                      <Controller
-                        name="budgetRange"
-                        control={control}
-                        render={({ field }) => (
-                          <Slider
-                            min={20000}
-                            max={1000000}
-                            step={10000}
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            className="w-full py-4"
-                          />
-                        )}
-                      />
-                    </div>
                   </div>
                 </motion.div>
               )}
@@ -289,15 +366,15 @@ export default function BespokeRequestPage() {
                   className="space-y-6"
                 >
                   <h3 className="text-2xl font-serif border-b border-border pb-4 mb-6">Design Requirements</h3>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="description">Describe your dream piece *</Label>
-                    <Textarea 
-                      id="description" 
+                    <Textarea
+                      id="description"
                       rows={5}
                       placeholder="Tell us about the design, style (e.g. vintage, minimalist, art deco), and any specific elements you want..."
-                      {...register('description')} 
-                      className={errors.description ? 'border-destructive resize-none' : 'resize-none'} 
+                      {...register('description')}
+                      className={errors.description ? 'border-destructive resize-none' : 'resize-none'}
                     />
                     {errors.description && <p className="text-destructive text-sm">{errors.description.message}</p>}
                   </div>
@@ -313,7 +390,7 @@ export default function BespokeRequestPage() {
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="engravingText">Engraving Text (Optional)</Label>
-                      <Input id="engravingText" {...register('engravingText')} placeholder="e.g. Forever Yours 12.04.24" />
+                      <Input id="engravingText" {...register('engravingText')} placeholder="Enter text to be engraved" />
                     </div>
                   </div>
                 </motion.div>
@@ -332,16 +409,16 @@ export default function BespokeRequestPage() {
                   <p className="text-muted-foreground mb-4">
                     Upload any sketches, photos, or references that capture the style you are looking for.
                   </p>
-                  
+
                   <UploadDropzone onFilesChange={setImages} maxFiles={5} />
-                  
+
                   <div className="space-y-2 mt-6">
                     <Label htmlFor="inspirationText">Additional Context for Images</Label>
-                    <Textarea 
-                      id="inspirationText" 
+                    <Textarea
+                      id="inspirationText"
                       rows={3}
                       placeholder="e.g. 'I love the setting from image 1, but the band from image 2'"
-                      {...register('inspirationText')} 
+                      {...register('inspirationText')}
                       className="resize-none"
                     />
                   </div>
@@ -358,7 +435,7 @@ export default function BespokeRequestPage() {
                   className="space-y-6"
                 >
                   <h3 className="text-2xl font-serif border-b border-border pb-4 mb-6">Review & Submit</h3>
-                  
+
                   <div className="bg-accent/10 rounded-xl p-6 space-y-6 border border-border">
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
@@ -367,12 +444,11 @@ export default function BespokeRequestPage() {
                       </div>
                       <div>
                         <span className="text-muted-foreground block mb-1">Contact</span>
-                        <span className="font-medium">{formData.email} <br/> {formData.phone}</span>
+                        <span className="font-medium">{formData.email} <br /> {formData.phone}{formData.country ? ` · ${formData.country}` : ''}</span>
                       </div>
                       <div className="col-span-2 border-t border-border pt-4 mt-2">
                         <span className="text-muted-foreground block mb-1">Jewellery Specification</span>
-                        <span className="font-medium capitalize">{formData.jewelleryType} - {formData.metalType}</span>
-                        <p className="text-muted-foreground mt-1 text-xs">Budget: ₹{formData.budgetRange?.[0]?.toLocaleString()} +</p>
+                        <span className="font-medium capitalize">{formData.jewelleryType} — {formData.metalType}{formData.metalSubType ? ` (${formData.metalSubType})` : ''}</span>
                       </div>
                       <div className="col-span-2 border-t border-border pt-4 mt-2">
                         <span className="text-muted-foreground block mb-1">Description</span>
@@ -384,7 +460,7 @@ export default function BespokeRequestPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <p className="text-sm text-muted-foreground text-center">
                     By submitting this request, you agree to our terms and conditions for bespoke creations.
                   </p>
@@ -405,16 +481,16 @@ export default function BespokeRequestPage() {
               </Button>
 
               {currentStep < steps.length - 1 ? (
-                <Button 
-                  type="button" 
+                <Button
+                  type="button"
                   onClick={nextStep}
                   className="bg-bespoke-gold text-white hover:bg-bespoke-gold-dark"
                 >
                   Next Step <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
               ) : (
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   disabled={isSubmitting}
                   className="bg-bespoke-gold text-white hover:bg-bespoke-gold-dark min-w-[140px]"
                 >

@@ -9,11 +9,12 @@ import { Eye, EyeOff, Phone, Lock, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 export default function LoginPage() {
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
-  
+
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -44,12 +45,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf6f3] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-muted flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <Link href="/" className="flex justify-center mb-6">
-          <Logo className="h-10" />
+          <Image
+            src="/logo.png"
+            alt="CaratHope Logo"
+            width={180}
+            height={180}
+            className="object-contain h-24 w-auto"
+            priority
+          />
         </Link>
-        <h2 className="mt-6 text-center text-3xl font-serif text-[#2a2118]">
+        <h2 className="mt-6 text-center text-3xl font-serif text-foreground">
           Welcome Back
         </h2>
         <p className="mt-2 text-center text-sm text-slate-500">
@@ -58,11 +66,11 @@ export default function LoginPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white py-10 px-6 shadow-xl shadow-[#b97a57]/5 rounded-3xl border border-[#e8d5cc]/60 sm:px-12"
+          className="bg-white py-10 px-6 shadow-xl shadow-[var(--primary)]/5 rounded-3xl border border-border/60 sm:px-12"
         >
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
@@ -70,7 +78,7 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
-            
+
             <div>
               <label className="block text-sm font-medium text-slate-700">Mobile Number</label>
               <div className="mt-1 relative rounded-md shadow-sm">
@@ -82,7 +90,7 @@ export default function LoginPage() {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                   placeholder="e.g. +919876543210"
                 />
               </div>
@@ -91,7 +99,7 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between">
                 <label className="block text-sm font-medium text-slate-700">Password</label>
-                <Link href="#" className="text-xs font-medium text-[#b97a57] hover:text-[#a06648] transition-colors">
+                <Link href="#" className="text-xs font-medium text-primary hover:text-primary/90 transition-colors">
                   Forgot password?
                 </Link>
               </div>
@@ -104,7 +112,7 @@ export default function LoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                  className="block w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                   placeholder="••••••••"
                 />
                 <button
@@ -121,7 +129,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-6 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-[#b97a57] hover:bg-[#a06648] focus:outline-none transition-all duration-300"
+                className="w-full flex justify-center py-6 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none transition-all duration-300"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
@@ -143,9 +151,9 @@ export default function LoginPage() {
 
           <div className="mt-8 text-center text-sm">
             <span className="text-slate-500">Don't have an account? </span>
-            <Link href="/register" className="font-medium text-[#b97a57] hover:text-[#a06648] transition-colors relative group">
+            <Link href="/register" className="font-medium text-primary hover:text-primary/90 transition-colors relative group">
               Create one
-              <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[#b97a57] transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full"></span>
             </Link>
           </div>
         </motion.div>

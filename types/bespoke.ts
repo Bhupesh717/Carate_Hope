@@ -26,13 +26,15 @@ export interface BespokeOrder {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
+  customerCountry?: string;
 
   jewelleryType: string;
   metalType: string;
+  metalSubType?: string;
   goldPurity?: string;
   gemstone?: string;
   ringSize?: string;
-  budgetRange: string;
+  budgetRange?: string;
   occasion?: string;
   deadline?: string;
 
@@ -58,12 +60,14 @@ export interface BespokeOrderRequestPayload {
   name: string;
   email: string;
   phone: string;
+  country?: string;
   jewelleryType: string;
   metalType: string;
+  metalSubType?: string;
   goldPurity?: string;
   gemstoneSelection?: string;
   ringSize?: string;
-  budgetRange: string;
+  budgetRange?: string;
   occasion?: string;
   deadline?: string;
   description: string;

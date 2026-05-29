@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Mail, MapPin, Phone, Facebook, Instagram, Twitter } from 'lucide-react';
 import { Logo } from '@/components/logo';
+import Image from 'next/image';
 
 export function Footer() {
   return (
@@ -123,9 +124,16 @@ export function Footer() {
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-8 mb-16">
             {/* Brand Column */}
-            <div className="space-y-6">
-              <Link href="/">
-                <Logo className="h-8" textColorClass="text-white" />
+            <div className="space-y-2">
+              <Link href="/" className="inline-block">
+                <Image
+                  src="/logo.png"
+                  alt="CaratHope Logo"
+                  width={200}
+                  height={200}
+                  className="object-contain h-20 w-auto"
+                  priority
+                />
               </Link>
               <p className="text-sm leading-relaxed text-slate-400">
                 Your trusted destination for stylish, elegant, and affordable jewelry.
@@ -137,28 +145,12 @@ export function Footer() {
               </div>
               <div className="pt-2">
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">We Accept</p>
-                <div className="flex flex-wrap gap-2">
-                  {/* Visa */}
-                  <svg className="h-6 w-10 rounded bg-white p-0.5 text-slate-800" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.8 16.2l1.2-7.2h-1.8l-1.2 7.2h1.8zm-6.6-6.6c-.6-.6-1.5-.9-2.4-.9-2.4 0-3.6 1.2-3.6 2.7 0 2 2.7 1.8 2.7 3 0 .4-.4.8-1.2.8-.9 0-1.8-.4-2.1-.6l-.3 1.5c.6.3 1.5.6 2.4.6 2.4 0 3.6-1.2 3.6-2.7 0-2.1-2.7-1.9-2.7-3 0-.4.4-.7 1-.7.7 0 1.5.3 1.8.5l.3-1.5zm-5.4 0H6l-3.3 7.2h1.8l.3-.9h2.1l.2.9h1.8l-1.5-7.2zm-2.4 4.8l.6-1.8.3 1.8h-.9zm14.1-4.8l-1.5 5.1-.6-5.1h-1.8l1.5 7.2h1.8l2.4-7.2h-1.8z" />
-                  </svg>
-                  {/* Mastercard */}
-                  <svg className="h-6 w-10 rounded bg-white p-0.5" viewBox="0 0 24 24">
-                    <circle cx="9" cy="12" r="6" fill="#EB001B" />
-                    <circle cx="15" cy="12" r="6" fill="#F79E1B" fillOpacity="0.8" />
-                  </svg>
-                  {/* Paypal */}
-                  <svg className="h-6 w-10 rounded bg-white p-0.5 text-[#003087]" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M20 8.5c-.2-1.7-1.3-3-3-3.5-1-.3-2.3-.3-3.6-.3H7.6c-.5 0-.9.4-1 .9L3.8 20.3c-.1.5.3.9.8.9h4.3c.4 0 .7-.3.8-.7l1-6.1c.1-.5.5-.9 1-.9h1.3c2.7 0 4.8-1.1 5.3-3.9.3-1.5.1-2.6-.3-3.5l-.7 2.4z" />
-                  </svg>
-                  {/* Apple Pay */}
-                  <svg className="h-6 w-10 rounded bg-white p-0.5 text-black" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.05 13.5c-.1 1.7 1.5 2.5 1.6 2.6-.8 1.1-2 1.3-2.4 1.3-1.1 0-2.1-.7-2.6-.7-.6 0-1.4.6-2.3.6-1.2 0-2.3-.7-2.9-1.7-1.2-2.1-.3-5.2.9-6.9.6-.8 1.3-1.5 2.2-1.5.8 0 1.6.5 2.1.5.5 0 1.4-.6 2.4-.6 1 0 1.9.5 2.5 1.3-2.1 1.2-1.7 3.7.6 4.6-.5 1.3-1.5 2.6-2.1 3.1zM14.65 6.9c.4-.5.7-1.2.6-2-.7 0-1.5.4-2 1-.4.4-.7 1.2-.6 1.9.8.1 1.6-.4 2-.9z" />
-                  </svg>
-                  {/* Amex */}
-                  <svg className="h-6 w-10 rounded bg-[#0070d2] p-0.5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M22 6H2a2 2 0 00-2 2v8a2 2 0 002 2h20a2 2 0 002-2V8a2 2 0 00-2-2zM4 14.5L3 12l-1 2.5H1.2L2.5 11h1l1.3 3.5H4zm5.5 0v-3.5h.8v2.7h1.5v.8H9.5zm5.5 0V11h3v.8h-2.2v.6h2v.8h-2v.6h2.2v.7H15zm-4.3-1.8H12v.7h-1.3v-.7z" />
-                  </svg>
+                <div className="flex flex-wrap gap-3 items-center">
+                  <Image src="/visa.png" alt="Visa" width={90} height={36} className="h-9 w-auto rounded object-contain bg-white px-1.5 py-1" />
+                  <Image src="/card.png" alt="Mastercard" width={90} height={36} className="h-9 w-auto rounded object-contain bg-white px-1.5 py-1" />
+                  <Image src="/paypal.png" alt="PayPal" width={90} height={36} className="h-9 w-auto rounded object-contain bg-white px-1.5 py-1" />
+                  <Image src="/apple-pay.png" alt="Apple Pay" width={90} height={36} className="h-9 w-auto rounded object-contain bg-white px-1.5 py-1" />
+                  <Image src="/stripe.png" alt="Stripe" width={90} height={36} className="h-9 w-auto rounded object-contain bg-white px-1.5 py-1" />
                 </div>
               </div>
             </div>

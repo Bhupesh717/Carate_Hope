@@ -83,15 +83,15 @@ export function Testimonials() {
       {/* Header */}
       <div className="mx-auto max-w-7xl px-6 text-center mb-16">
         <div className="flex justify-center mb-4">
-          <div className="inline-flex items-center gap-2 bg-[#faf6f3] text-[#b97a57] text-[11px] font-medium tracking-[0.2em] uppercase px-5 py-1.5 rounded-full border border-[#e8d5cc]">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#b97a57]" />
+          <div className="inline-flex items-center gap-2 bg-muted text-primary text-[11px] font-medium tracking-[0.2em] uppercase px-5 py-1.5 rounded-full border border-border">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary" />
             Client Stories
           </div>
         </div>
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-[#2A2118] font-medium mb-3">
-          Cherished <span className="italic text-[#b97a57] font-normal">Moments</span>
+        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-foreground font-medium mb-3">
+          Cherished <span className="italic text-primary font-normal">Moments</span>
         </h2>
-        <p className="text-[15px] text-[#2A2118]/60 tracking-wide max-w-lg mx-auto">
+        <p className="text-[15px] text-foreground/60 tracking-wide max-w-lg mx-auto">
           Thousands of families trust us to craft their perfect heirlooms and celebrate their most precious milestones.
         </p>
       </div>
@@ -109,48 +109,48 @@ export function Testimonials() {
               className="ts-slide"
             >
               <div 
-                className="group h-full bg-white rounded-3xl p-8 relative overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 border-[1.5px] border-[#e8d5cc]/60 shadow-[0_4px_24px_rgba(185,122,87,0.04)] hover:border-[#b97a57]/50 hover:shadow-[0_20px_48px_rgba(185,122,87,0.12)]"
+                className="group h-full bg-white rounded-3xl p-8 relative overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 border-[1.5px] border-border/60 shadow-[0_4px_24px_rgba(185,122,87,0.04)] hover:border-primary/50 hover:shadow-[0_20px_48px_rgba(185,122,87,0.12)]"
               >
                 {/* Accent Top Bar */}
                 <div 
-                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-gradient-to-r from-[#b97a57] to-[#dca68a]"
+                  className="absolute top-0 left-0 right-0 h-[3px] rounded-t-3xl opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-gradient-to-r from-primary to-accent"
                 />
                 
                 {/* Background Blob */}
-                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full pointer-events-none bg-[#b97a57]/10" />
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full pointer-events-none bg-primary/10" />
                 
                 {/* Badge */}
                 {t.badge && (
                   <div 
-                    className="absolute top-6 right-6 text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full border bg-[#faf6f3] text-[#b97a57] border-[#e8d5cc]"
+                    className="absolute top-6 right-6 text-[10px] font-bold tracking-[0.15em] uppercase px-3 py-1 rounded-full border bg-muted text-primary border-border"
                   >
                     {t.badge}
                   </div>
                 )}
 
-                <span className="font-serif text-7xl leading-[0.5] mb-8 block text-[#b97a57]/20">
+                <span className="font-serif text-7xl leading-[0.5] mb-8 block text-primary/20">
                   "
                 </span>
 
                 <div className="flex gap-1 mb-4">
                   {[1, 2, 3, 4, 5].map((_, starIdx) => (
-                    <Star key={starIdx} className="w-3.5 h-3.5 fill-[#b97a57] text-[#b97a57]" />
+                    <Star key={starIdx} className="w-3.5 h-3.5 fill-primary text-primary" />
                   ))}
                 </div>
 
-                <p className="text-[15px] leading-[1.8] text-[#2A2118]/65 font-light mb-8 flex-1">
+                <p className="text-[15px] leading-[1.8] text-foreground/65 font-light mb-8 flex-1">
                   {t.text}
                 </p>
 
-                <div className="w-10 h-[1.5px] mb-5 rounded-sm shrink-0 bg-[#b97a57]/30" />
+                <div className="w-10 h-[1.5px] mb-5 rounded-sm shrink-0 bg-primary/30" />
 
                 <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0 border-[1.5px] bg-[#faf6f3] text-[#b97a57] border-[#e8d5cc]">
+                  <div className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold shrink-0 border-[1.5px] bg-muted text-primary border-border">
                     {t.initials}
                   </div>
                   <div className="flex flex-col">
-                    <p className="text-sm font-semibold text-[#2A2118] m-0">{t.name}</p>
-                    <p className="text-xs text-[#2A2118]/40 m-0">{t.location}</p>
+                    <p className="text-sm font-semibold text-foreground m-0">{t.name}</p>
+                    <p className="text-xs text-foreground/40 m-0">{t.location}</p>
                   </div>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export function Testimonials() {
         <div className="mt-8 flex items-center justify-center gap-5">
           <button 
             onClick={() => scrollTo(Math.max(0, activeIndex - 1))}
-            className="w-11 h-11 rounded-full bg-white border-[1.5px] border-[#b97a57]/25 flex items-center justify-center text-[#2A2118]/40 shadow-[0_2px_12px_rgba(185,122,87,0.08)] transition-all hover:bg-[#faf6f3] hover:border-[#b97a57] hover:text-[#b97a57] hover:shadow-[0_4px_16px_rgba(185,122,87,0.2)]"
+            className="w-11 h-11 rounded-full bg-white border-[1.5px] border-primary/25 flex items-center justify-center text-foreground/40 shadow-[0_2px_12px_rgba(185,122,87,0.08)] transition-all hover:bg-muted hover:border-primary hover:text-primary hover:shadow-[0_4px_16px_rgba(185,122,87,0.2)]"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -173,7 +173,7 @@ export function Testimonials() {
                 key={i}
                 onClick={() => scrollTo(i)}
                 className={`h-1.5 rounded-full transition-all duration-400 ${
-                  activeIndex === i ? 'w-7 bg-[#b97a57]' : 'w-1.5 bg-[#2A2118]/15'
+                  activeIndex === i ? 'w-7 bg-primary' : 'w-1.5 bg-foreground/15'
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -182,7 +182,7 @@ export function Testimonials() {
 
           <button 
             onClick={() => scrollTo(Math.min(testimonials.length - 1, activeIndex + 1))}
-            className="w-11 h-11 rounded-full bg-white border-[1.5px] border-[#b97a57]/25 flex items-center justify-center text-[#2A2118]/40 shadow-[0_2px_12px_rgba(185,122,87,0.08)] transition-all hover:bg-[#faf6f3] hover:border-[#b97a57] hover:text-[#b97a57] hover:shadow-[0_4px_16px_rgba(185,122,87,0.2)]"
+            className="w-11 h-11 rounded-full bg-white border-[1.5px] border-primary/25 flex items-center justify-center text-foreground/40 shadow-[0_2px_12px_rgba(185,122,87,0.08)] transition-all hover:bg-muted hover:border-primary hover:text-primary hover:shadow-[0_4px_16px_rgba(185,122,87,0.2)]"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

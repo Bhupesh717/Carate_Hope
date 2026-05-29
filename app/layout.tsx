@@ -4,7 +4,7 @@ import { Toaster } from 'sonner'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CarateHope - Finest Jewelry',
+  title: 'CaratHope - Finest Jewelry',
   description: 'Discover timeless jewelry pieces inspired by life. Rings, necklaces, bracelets, and earrings for every occasion.',
   generator: 'v0.app',
   icons: {

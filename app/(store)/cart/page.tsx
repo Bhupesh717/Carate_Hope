@@ -186,11 +186,11 @@ export default function CartPage() {
 
       <div className="mx-auto max-w-7xl px-6 py-12">
         {checkoutSuccess ? (
-          <div className="flex flex-col items-center justify-center text-center py-16 max-w-lg mx-auto bg-white border border-[#e8d5cc]/60 rounded-3xl p-8 shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center py-16 max-w-lg mx-auto bg-white border border-border/60 rounded-3xl p-8 shadow-sm">
             <div className="rounded-full bg-emerald-100 p-4 mb-6">
               <CheckCircle2 className="h-12 w-12 text-emerald-600" />
             </div>
-            <h2 className="text-3xl font-serif text-[#2a2118] mb-2">Order Confirmed!</h2>
+            <h2 className="text-3xl font-serif text-foreground mb-2">Order Confirmed!</h2>
             <p className="text-slate-600 mb-6 leading-relaxed">
               Thank you for your purchase. Your order <span className="font-mono font-semibold text-neutral-900">ORD-{placedOrderId}</span> has been placed successfully and is now being processed.
             </p>
@@ -268,7 +268,7 @@ export default function CartPage() {
             </div>
 
             {/* Summary */}
-            <div className="h-fit rounded-lg border border-neutral-200 p-6 bg-[#faf6f3]">
+            <div className="h-fit rounded-lg border border-neutral-200 p-6 bg-muted">
               <h3 className="mb-4 text-lg font-light text-neutral-900">Order Summary</h3>
 
               {/* Coupon Code Panel */}
@@ -353,9 +353,9 @@ export default function CartPage() {
 
       {/* Checkout Form Dialog */}
       <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
-        <DialogContent className="sm:max-w-md bg-white border border-[#e8d5cc]/60 rounded-3xl p-6 shadow-lg">
+        <DialogContent className="sm:max-w-md bg-white border border-border/60 rounded-3xl p-6 shadow-lg">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-serif text-[#2a2118]">Checkout Details</DialogTitle>
+            <DialogTitle className="text-2xl font-serif text-foreground">Checkout Details</DialogTitle>
             <DialogDescription className="text-slate-500 text-sm">
               Please enter your contact information to place the order.
             </DialogDescription>
@@ -370,7 +370,7 @@ export default function CartPage() {
                 placeholder="e.g. Rahul Sharma"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="h-11 border-neutral-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57]"
+                className="h-11 border-neutral-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary"
               />
             </div>
 
@@ -383,7 +383,7 @@ export default function CartPage() {
                 placeholder="e.g. rahul@example.com"
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
-                className="h-11 border-neutral-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57]"
+                className="h-11 border-neutral-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary"
               />
             </div>
 
@@ -395,7 +395,7 @@ export default function CartPage() {
                 placeholder="e.g. +919876543210"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
-                className="h-11 border-neutral-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57]"
+                className="h-11 border-neutral-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary"
               />
             </div>
 
@@ -411,7 +411,7 @@ export default function CartPage() {
               <Button
                 type="submit"
                 disabled={submittingCheckout}
-                className="flex-1 bg-[#b97a57] text-white hover:bg-[#a06648] rounded-xl h-11"
+                className="flex-1 bg-primary text-white hover:bg-primary/90 rounded-xl h-11"
               >
                 {submittingCheckout ? (
                   <span className="flex items-center justify-center gap-2">

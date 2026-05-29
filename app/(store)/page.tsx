@@ -73,7 +73,7 @@ export default function Page() {
           <div className="mb-12 flex items-center justify-between">
             <h2 className="text-3xl font-light text-foreground">Featured Collections</h2>
             <Link href="/shop">
-              <Button className="bg-[#c88a6d] hover:bg-[#b0775d] text-white rounded-none px-8 py-5 text-xs tracking-widest uppercase transition-colors">
+              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-none px-8 py-5 text-xs tracking-widest uppercase transition-colors">
                 View All
               </Button>
             </Link>
@@ -101,8 +101,7 @@ export default function Page() {
 
       {/* Instagram Grid */}
       <InstagramGrid />
-      {/* Brand Logotypes Marquee */}
-      <BrandMarquee />
+
     </div>
   );
 }

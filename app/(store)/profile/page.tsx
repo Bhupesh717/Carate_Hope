@@ -42,7 +42,7 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-  if (!isMounted) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-[#b97a57]" /></div>;
+  if (!isMounted) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="animate-spin text-primary" /></div>;
 
   if (!isAuthenticated || !user) {
     router.replace('/login');
@@ -90,7 +90,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="bg-[#faf6f3] min-h-screen pb-24">
+    <div className="bg-muted min-h-screen pb-24">
       <PageHeader
         title="My Account"
         eyebrow="Profile"
@@ -102,8 +102,8 @@ export default function ProfilePage() {
         <div className="grid md:grid-cols-[250px_1fr] gap-10">
 
           {/* Sidebar Menu */}
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-[#e8d5cc]/60 h-fit space-y-2">
-            <Link href="/profile" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#faf6f3] text-[#b97a57] font-medium text-sm transition-colors">
+          <div className="bg-white p-6 rounded-3xl shadow-sm border border-border/60 h-fit space-y-2">
+            <Link href="/profile" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-muted text-primary font-medium text-sm transition-colors">
               <User className="w-4 h-4" />
               Profile Info
             </Link>
@@ -125,11 +125,11 @@ export default function ProfilePage() {
           </div>
 
           {/* Main Content */}
-          <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-[#e8d5cc]/60">
+          <div className="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-border/60">
             <div className="flex justify-between items-center mb-8">
-              <h2 className="text-2xl font-serif text-[#2a2118]">Personal Information</h2>
+              <h2 className="text-2xl font-serif text-foreground">Personal Information</h2>
               {!isEditing ? (
-                <Button variant="outline" onClick={() => setIsEditing(true)} className="rounded-xl border-[#e8d5cc] text-[#b97a57] hover:bg-[#faf6f3] hover:text-[#a06648]">
+                <Button variant="outline" onClick={() => setIsEditing(true)} className="rounded-xl border-border text-primary hover:bg-muted hover:text-primary/90">
                   Edit Profile
                 </Button>
               ) : (
@@ -140,7 +140,7 @@ export default function ProfilePage() {
                   <Button 
                     onClick={handleSave} 
                     disabled={isSaving}
-                    className="rounded-xl bg-[#b97a57] text-white hover:bg-[#a06648] flex items-center gap-2"
+                    className="rounded-xl bg-primary text-white hover:bg-primary/90 flex items-center gap-2"
                   >
                     {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                     Save Changes
@@ -157,7 +157,7 @@ export default function ProfilePage() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-[#b97a57] bg-slate-50"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary bg-slate-50"
                   />
                 ) : (
                   <p className="text-lg text-slate-800">{user.name}</p>
@@ -171,7 +171,7 @@ export default function ProfilePage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-[#b97a57] bg-slate-50"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary bg-slate-50"
                   />
                 ) : (
                   <p className="text-lg text-slate-800">{user.email}</p>
@@ -186,7 +186,7 @@ export default function ProfilePage() {
                     placeholder="e.g. +91 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-[#b97a57] bg-slate-50"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary bg-slate-50"
                   />
                 ) : (
                   <p className="text-lg text-slate-800">{user.phone || '—'}</p>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
             {/* Addresses section */}
             <div className="mt-12 pt-12 border-t border-slate-100 space-y-6">
-              <h3 className="text-xl font-serif text-[#2a2118]">My Addresses</h3>
+              <h3 className="text-xl font-serif text-foreground">My Addresses</h3>
               
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Permanent Address */}
@@ -213,10 +213,10 @@ export default function ProfilePage() {
                       value={permanentAddress}
                       onChange={(e) => handlePermanentAddressChange(e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-[#b97a57] bg-slate-50 resize-none text-sm min-h-[100px]"
+                      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary bg-slate-50 resize-none text-sm min-h-[100px]"
                     />
                   ) : (
-                    <p className="text-base text-slate-700 whitespace-pre-line leading-relaxed min-h-[100px] bg-[#faf6f3]/50 p-4 rounded-xl border border-dashed border-[#e8d5cc]/40">
+                    <p className="text-base text-slate-700 whitespace-pre-line leading-relaxed min-h-[100px] bg-muted/50 p-4 rounded-xl border border-dashed border-border/40">
                       {user.permanentAddress || 'No permanent address added yet.'}
                     </p>
                   )}
@@ -232,7 +232,7 @@ export default function ProfilePage() {
                           type="checkbox"
                           checked={sameAddress}
                           onChange={(e) => handleSameAddressChange(e.target.checked)}
-                          className="rounded text-[#b97a57] focus:ring-[#b97a57]"
+                          className="rounded text-primary focus:ring-[var(--primary)]"
                         />
                         <span>Same as Permanent</span>
                       </label>
@@ -245,12 +245,12 @@ export default function ProfilePage() {
                       onChange={(e) => setShippingAddress(e.target.value)}
                       disabled={sameAddress}
                       rows={3}
-                      className={`w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-[#b97a57] bg-slate-50 resize-none text-sm transition-all min-h-[100px] ${
+                      className={`w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:border-primary bg-slate-50 resize-none text-sm transition-all min-h-[100px] ${
                         sameAddress ? 'opacity-60 cursor-not-allowed bg-slate-100/80' : ''
                       }`}
                     />
                   ) : (
-                    <p className="text-base text-slate-700 whitespace-pre-line leading-relaxed min-h-[100px] bg-[#faf6f3]/50 p-4 rounded-xl border border-dashed border-[#e8d5cc]/40">
+                    <p className="text-base text-slate-700 whitespace-pre-line leading-relaxed min-h-[100px] bg-muted/50 p-4 rounded-xl border border-dashed border-border/40">
                       {user.shippingAddress || 'No shipping address added yet.'}
                     </p>
                   )}
@@ -259,7 +259,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="mt-12 pt-12 border-t border-slate-100">
-              <h3 className="text-xl font-serif text-[#2a2118] mb-6">Recent Activity</h3>
+              <h3 className="text-xl font-serif text-foreground mb-6">Recent Activity</h3>
               <p className="text-slate-500 text-sm">You haven't made any recent changes to your account.</p>
             </div>
           </div>

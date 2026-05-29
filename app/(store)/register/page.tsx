@@ -9,11 +9,12 @@ import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Phone, MapPin } from 'lucide
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { toast } from 'sonner';
+import Image from 'next/image';
 
 export default function RegisterPage() {
   const router = useRouter();
   const register = useAuthStore((state) => state.register);
-  
+
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -72,12 +73,19 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf6f3] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-muted flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-xl">
         <Link href="/" className="flex justify-center mb-6">
-          <Logo className="h-10" />
+          <Image
+            src="/logo.png"
+            alt="CaratHope Logo"
+            width={180}
+            height={180}
+            className="object-contain h-24 w-auto"
+            priority
+          />
         </Link>
-        <h2 className="mt-6 text-center text-3xl font-serif text-[#2a2118]">
+        <h2 className="mt-6 text-center text-3xl font-serif text-foreground">
           Create an Account
         </h2>
         <p className="mt-2 text-center text-sm text-slate-500">
@@ -86,11 +94,11 @@ export default function RegisterPage() {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-xl">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-white py-10 px-6 shadow-xl shadow-[#b97a57]/5 rounded-3xl border border-[#e8d5cc]/60 sm:px-12"
+          className="bg-white py-10 px-6 shadow-xl shadow-[var(--primary)]/5 rounded-3xl border border-border/60 sm:px-12"
         >
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
@@ -98,7 +106,7 @@ export default function RegisterPage() {
                 {error}
               </div>
             )}
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Name */}
               <div>
@@ -112,7 +120,7 @@ export default function RegisterPage() {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                     placeholder="Rahul Sharma"
                   />
                 </div>
@@ -130,7 +138,7 @@ export default function RegisterPage() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                     placeholder="e.g. +919876543210"
                   />
                 </div>
@@ -147,7 +155,7 @@ export default function RegisterPage() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                     placeholder="rahul@example.com"
                   />
                 </div>
@@ -165,7 +173,7 @@ export default function RegisterPage() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors"
+                    className="block w-full pl-10 pr-10 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors"
                     placeholder="••••••••"
                   />
                   <button
@@ -190,7 +198,7 @@ export default function RegisterPage() {
                   value={permanentAddress}
                   onChange={(e) => handlePermanentAddressChange(e.target.value)}
                   rows={2}
-                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-colors resize-none"
+                  className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-colors resize-none"
                   placeholder="Enter permanent address..."
                 />
               </div>
@@ -205,7 +213,7 @@ export default function RegisterPage() {
                     type="checkbox"
                     checked={sameAddress}
                     onChange={(e) => handleSameAddressChange(e.target.checked)}
-                    className="rounded text-[#b97a57] focus:ring-[#b97a57]"
+                    className="rounded text-primary focus:ring-[var(--primary)]"
                   />
                   <span>Same as Permanent</span>
                 </label>
@@ -219,9 +227,8 @@ export default function RegisterPage() {
                   onChange={(e) => setShippingAddress(e.target.value)}
                   disabled={sameAddress}
                   rows={2}
-                  className={`block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[#b97a57] focus:border-[#b97a57] bg-slate-50/50 text-sm transition-all resize-none ${
-                    sameAddress ? 'opacity-60 cursor-not-allowed bg-slate-100/80' : ''
-                  }`}
+                  className={`block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-[var(--primary)] focus:border-primary bg-slate-50/50 text-sm transition-all resize-none ${sameAddress ? 'opacity-60 cursor-not-allowed bg-slate-100/80' : ''
+                    }`}
                   placeholder="Enter shipping address..."
                 />
               </div>
@@ -231,7 +238,7 @@ export default function RegisterPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-6 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-[#b97a57] hover:bg-[#a06648] focus:outline-none transition-all duration-300 animate-pulse-subtle"
+                className="w-full flex justify-center py-6 px-4 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none transition-all duration-300 animate-pulse-subtle"
               >
                 {isLoading ? (
                   <span className="flex items-center gap-2">
@@ -253,9 +260,9 @@ export default function RegisterPage() {
 
           <div className="mt-8 text-center text-sm">
             <span className="text-slate-500">Already have an account? </span>
-            <Link href="/login" className="font-medium text-[#b97a57] hover:text-[#a06648] transition-colors relative group">
+            <Link href="/login" className="font-medium text-primary hover:text-primary/90 transition-colors relative group">
               Sign in
-              <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-[#b97a57] transition-all group-hover:w-full"></span>
+              <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full"></span>
             </Link>
           </div>
         </motion.div>

@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { apiClient } from '@/lib/api-client';
 import { Product } from '@/types';
+import Image from 'next/image';
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const [product, setProduct] = useState<Product | null>(null);
@@ -98,7 +99,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#b97a57] border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -234,6 +235,18 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <div>
                 <h3 className="mb-2 font-light text-neutral-900">Returns</h3>
                 <p className="text-sm text-neutral-600">30-day return policy for all items</p>
+              </div>
+            </div>
+
+            {/* Payment Methods */}
+            <div className="border-t border-neutral-200 pt-6">
+              <p className="text-xs uppercase tracking-widest text-neutral-400 mb-3">Secure Payment</p>
+              <div className="flex flex-wrap gap-2 items-center">
+                <Image src="/visa.png" alt="Visa" width={90} height={36} className="h-8 w-auto rounded object-contain bg-neutral-100 px-2 py-1" />
+                <Image src="/card.png" alt="Mastercard" width={90} height={36} className="h-8 w-auto rounded object-contain bg-neutral-100 px-2 py-1" />
+                <Image src="/paypal.png" alt="PayPal" width={90} height={36} className="h-8 w-auto rounded object-contain bg-neutral-100 px-2 py-1" />
+                <Image src="/apple-pay.png" alt="Apple Pay" width={90} height={36} className="h-8 w-auto rounded object-contain bg-neutral-100 px-2 py-1" />
+                <Image src="/stripe.png" alt="Stripe" width={90} height={36} className="h-8 w-auto rounded object-contain bg-neutral-100 px-2 py-1" />
               </div>
             </div>
           </motion.div>
